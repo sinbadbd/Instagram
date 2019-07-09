@@ -115,20 +115,49 @@ class SignupVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
                 print(error.localizedDescription)
                 return
             }
-            var ref: DatabaseReference!
-            ref = Database.database().reference()
             
-            guard let uid = FIRUser?.user.uid else {return}
-            let userInfo = ["username": username, "email":email, "password":password]
-            let values = [uid: userInfo ]
+            guard let image = self.plusButton.imageView?.image else { return }
             
-            ref.child("Users").updateChildValues(values, withCompletionBlock: { (error, ref) in
-                if let error = error {
-                    print(error.localizedDescription)
+            guard let uploadData = image.jpegData(compressionQuality: 0.3) else { return }
+            
+            let filename = NSUUID().uuidString
+            
+            let storageRef = Storage.storage().reference().child("profile_images").child(filename)
+            storageRef.putData(uploadData, metadata: nil, completion: { (metadata, err) in
+                
+                if let err = err {
+                    print("Failed to upload profile image:", err)
                     return
                 }
-                print("save database")
-            })
+                
+                // Firebase 5 Update: Must now retrieve downloadURL
+                storageRef.downloadURL(completion: { (downloadURL, err) in
+                    if let err = err {
+                        print("Failed to fetch downloadURL:", err)
+                        return
+                    }
+                    
+                    guard let profileImageUrl = downloadURL?.absoluteString else { return }
+                    
+                    print("Successfully uploaded profile image:", profileImageUrl)
+                    
+                    guard let uid = FIRUser?.user.uid else { return }
+                    
+                    let dictionaryValues = ["username": username, "email":email, "password":password, "profileImageUrl": profileImageUrl]
+                    let values = [uid: dictionaryValues]
+                    
+                    Database.database().reference().child("Users").updateChildValues(values, withCompletionBlock: { (err, ref) in
+                        
+                        if let err = err {
+                            print("Failed to save user info into db:", err)
+                            return
+                        }
+                        
+                        print("Successfully saved user info to db")
+                        
+                    })
+                })
+            }) 
             print("Successfully create User!", FIRUser?.user.uid ?? "")
         }
     }
