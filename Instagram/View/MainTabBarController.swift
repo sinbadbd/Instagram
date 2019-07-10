@@ -2,7 +2,7 @@
 //  MainTabBarController.swift
 //  Instagram
 //
-//  Created by Zahedul Alam on 10/7/19.
+//   on 10/7/19.
 //  Copyright © 2019 sinbad. All rights reserved.
 //
 
