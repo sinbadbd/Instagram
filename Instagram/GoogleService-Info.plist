@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>853857912591-007igl22od46rq5ni542ea6j7l658l1r.apps.googleusercontent.com</string>
+	<string>853857912591-ignorcf6mu3rlgtjrcom5bnvij362f26.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.853857912591-007igl22od46rq5ni542ea6j7l658l1r</string>
+	<string>com.googleusercontent.apps.853857912591-ignorcf6mu3rlgtjrcom5bnvij362f26</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAvtNHOqUHiw--wuVefe5RS9O1H9IgTIeg</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.devsloop.Instagram</string>
+	<string>devsloop.Instagram</string>
 	<key>PROJECT_ID</key>
 	<string>instagram-28ab4</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:853857912591:ios:3c48a1b015557e4f</string>
+	<string>1:853857912591:ios:6911b386eb7c0e41</string>
 	<key>DATABASE_URL</key>
 	<string>https://instagram-28ab4.firebaseio.com</string>
 </dict>

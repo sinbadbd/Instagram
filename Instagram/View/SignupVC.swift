@@ -1,10 +1,4 @@
-//
-//  ViewController.swift
-//  Instagram
-//
-//  Created by Zahedul Alam on 9/7/19.
-//  Copyright © 2019 devsloop. All rights reserved.
-//
+
 
 import UIKit
 import Firebase
@@ -146,7 +140,7 @@ class SignupVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
                     let dictionaryValues = ["username": username, "email":email, "password":password, "profileImageUrl": profileImageUrl]
                     let values = [uid: dictionaryValues]
                     
-                    Database.database().reference().child("Users").updateChildValues(values, withCompletionBlock: { (err, ref) in
+                    Database.database().reference().child("users").updateChildValues(values, withCompletionBlock: { (err, ref) in
                         
                         if let err = err {
                             print("Failed to save user info into db:", err)
@@ -161,6 +155,7 @@ class SignupVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
             print("Successfully create User!", FIRUser?.user.uid ?? "")
         }
     }
+
     func alerMessage(title: String, message: String) -> Void {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
