@@ -24,12 +24,12 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HEADER_CELL, for: indexPath)
-            header.backgroundColor = .green
+           // header.backgroundColor = .green
             return header
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 200)
+        return CGSize(width: view.frame.width, height: 150)
     }
     
     var user : User?
@@ -39,8 +39,6 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         
         var ref: DatabaseReference!
         ref = Database.database().reference()
-        // self.navigationItem.title = Auth.auth().currentUser?.uid
-        
         ref.child("users").child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
             // Get user value
             print(snapshot)
