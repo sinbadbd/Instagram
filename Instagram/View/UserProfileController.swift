@@ -20,18 +20,40 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         collectionView.backgroundColor = .white
         navigationItem.title = Auth.auth().currentUser?.uid
         fetchUser()
-  
+        
         collectionView.register(UserProfileCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HEADER_CELL)
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: GRIDE_CELL)
+        
+        
+        setuplogoutButton()
     }
     
+    func setuplogoutButton(){
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleLogout))
+    }
+    
+    @objc func handleLogout(){
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Log out", style: .destructive, handler: { (_) in
+            do {
+                try Auth.auth().signOut()
+            } catch {
+                
+            }
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
+            
+        }))
+        present(alertController, animated: true, completion: nil)
+    }
     
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HEADER_CELL, for: indexPath)
-           // header.backgroundColor = .green
-            return header
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HEADER_CELL, for: indexPath)
+        // header.backgroundColor = .green
+        return header
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
