@@ -5,6 +5,19 @@ import Firebase
 
 class SignupVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        navigationController?.isNavigationBarHidden = true
+        view.addSubview(plusButton)
+        plusButton.translatesAutoresizingMaskIntoConstraints = false
+        plusButton.anchor(top: view.topAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 80, left: 20, bottom: 0, right: 20), size: CGSize(width: 140, height: 140))
+        plusButton.centerXInSuperview()
+        
+        setupInputFields()
+    }
+    
+    
     let plusButton:UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "plus_photo").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -176,18 +189,7 @@ class SignupVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         self.present(alert, animated: true, completion: nil)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        
-        view.addSubview(plusButton)
-        plusButton.translatesAutoresizingMaskIntoConstraints = false
-        plusButton.anchor(top: view.topAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 80, left: 20, bottom: 0, right: 20), size: CGSize(width: 140, height: 140))
-        plusButton.centerXInSuperview()
-        
-        setupInputFields()
-    }
-    
+
     func setupInputFields(){
         let inputView = UIView()
         inputView.translatesAutoresizingMaskIntoConstraints = false
