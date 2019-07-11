@@ -15,6 +15,9 @@ class SignupVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         plusButton.centerXInSuperview()
         
         setupInputFields()
+        
+        view.addSubview(signInButton)
+        signInButton.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor,padding: .init(top: 0, left: 0, bottom: 40, right: 0))
     }
     
     
@@ -47,6 +50,20 @@ class SignupVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         
     }
    
+    
+    let signInButton:UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Already have an account? sign In.", for: .normal)
+        //   button.setImage(#imageLiteral(resourceName: "plus_photo").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.addTarget(self, action: #selector(handleSignIn), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    @objc func handleSignIn(){
+        let loginVC = LoginVC()
+        self.navigationController?.pushViewController(loginVC, animated: true)
+    }
     
     let emailTextField : UITextField = {
         let textField = UITextField()
