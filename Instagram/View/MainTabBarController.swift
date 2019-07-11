@@ -26,6 +26,9 @@ class MainTabBarController : UITabBarController {
             // ...
         }
         
+       setupController()
+    }
+    func setupController() {
         navigationController?.isNavigationBarHidden = true
         
         let layout = UICollectionViewFlowLayout()

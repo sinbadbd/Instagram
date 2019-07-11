@@ -45,6 +45,16 @@ class SignupVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
             plusButton.clipsToBounds = true
             plusButton.layer.borderColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
             plusButton.layer.borderWidth = 3
+            
+//            UIView.animate(withDuration: 0.5, delay: 0.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+//                // HERE
+//                self.plusButton.transform = CGAffineTransform.identity.scaledBy(x: 2, y: 2) // Scale your image
+//
+//            }) { (finished) in
+//                UIView.animate(withDuration: 1, animations: {
+//                    self.plusButton.transform = CGAffineTransform.identity // undo in 1 seconds
+//                })
+//            }
             self.dismiss(animated: true, completion: nil)
         }
         
@@ -177,6 +187,10 @@ class SignupVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
                             return
                         }
                         
+                        let login = LoginVC()
+                        DispatchQueue.main.async {
+                            self.navigationController?.pushViewController(login, animated: true)
+                        }
                         print("Successfully saved user info to db")
                         
                     })

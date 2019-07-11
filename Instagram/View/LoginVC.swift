@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginVC: UIViewController {
 
@@ -22,6 +23,8 @@ class LoginVC: UIViewController {
         // Do any additional setup after loading the view.
         
         setupInputFields()
+        self.tabBarController?.tabBar.isHidden = true
+
     }
     
     let logoView : UIView = {
@@ -96,7 +99,24 @@ class LoginVC: UIViewController {
     }()
 
     @objc func handleSignUpButton(){
-        
+       let email = emailTextField.text ?? ""
+       let password = passwordTextField.text ?? ""
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            if let error = error {
+                print("Failed to logged in\(error.localizedDescription)")
+                return
+            }
+            print("Successfullty login....", user?.user.uid ?? "")
+            
+          //  let profileVC = UserProfileController()
+          //  self.navigationController?.popToViewController(profileVC, animated: true)
+            
+            
+            guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else {  return }
+           mainTabBarController.setupController()
+            self.dismiss(animated: true, completion: nil)
+
+        }
     }
     
     

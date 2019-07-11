@@ -26,6 +26,8 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         
         
         setuplogoutButton()
+        
+        self.collectionView.reloadData()
     }
     
     func setuplogoutButton(){
@@ -37,6 +39,10 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         alertController.addAction(UIAlertAction(title: "Log out", style: .destructive, handler: { (_) in
             do {
                 try Auth.auth().signOut()
+                let loginVC = LoginVC()
+                DispatchQueue.main.async {
+                    self.navigationController?.pushViewController(loginVC, animated: true)
+                }
             } catch {
                 
             }
