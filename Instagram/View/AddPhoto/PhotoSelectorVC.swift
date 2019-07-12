@@ -76,7 +76,9 @@ class PhotoSelectorVC: UICollectionViewController, UICollectionViewDelegateFlowL
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(handleNext))
     }
     @objc func handleNext(){
-        print("next")
+        let shareVC = SharePhotoVC()
+        shareVC.selectedImage = header?.photoSelectedImage.image 
+        self.navigationController?.pushViewController(shareVC, animated: true)
     }
     
     @objc func handleCancel(){
@@ -84,9 +86,12 @@ class PhotoSelectorVC: UICollectionViewController, UICollectionViewDelegateFlowL
     }
  
     // HeaderSection
+    
+    var header: PhotoSelectorHeader?
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseIndentifierHeader, for: indexPath) as! PhotoSelectorHeader
         
+        self.header = header
         header.photoSelectedImage.image = selectedImage
         
         if let selectedImage = selectedImage {
@@ -111,7 +116,9 @@ class PhotoSelectorVC: UICollectionViewController, UICollectionViewDelegateFlowL
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.selectedImage = images[indexPath.item]
         self.collectionView.reloadData()
-        print(selectedImage)
+        
+        let indexPath = IndexPath(item: 0, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
     }
     
     
@@ -140,35 +147,6 @@ class PhotoSelectorVC: UICollectionViewController, UICollectionViewDelegateFlowL
         return 1
     }
     
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
-    }
-    */
 
 }
