@@ -38,7 +38,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         
         var ref: DatabaseReference!
         ref = Database.database().reference().child("posts").child(userID)
-        ref.observe(.value, with: { (snap) in
+        ref.queryOrdered(byChild: "createDate").observe(.value, with: { (snap) in
         guard let dictonaries =  snap.value as? [String : Any] else {return}
             //  print(snap.value)
             dictonaries.forEach({ (key, value) in

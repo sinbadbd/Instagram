@@ -45,7 +45,8 @@ class MainTabBarController : UITabBarController , UITabBarControllerDelegate{
     }
     func setupController() {
         
-        let homeVC =  setupNavigationVC(selectedImage:  "home_selected", unslectedImage: "home_unselected")
+      //  let homeVC =  setupNavigationVC(selectedImage:  "home_selected", unslectedImage: "home_unselected")
+        let homeVC = setupNavigationVC(rootViewController: HomeVC(collectionViewLayout: UICollectionViewFlowLayout()), selectedImage:  "home_selected", unslectedImage: "home_unselected")
         let searchNavController =  setupNavigationVC(selectedImage:  "search_selected", unslectedImage: "search_unselected")
         let plusNavController =  setupNavigationVC(selectedImage:  "plus_selected", unslectedImage: "plus_unselected")
         let likeNavController =  setupNavigationVC(selectedImage:  "like_selected", unslectedImage: "like_unselected")

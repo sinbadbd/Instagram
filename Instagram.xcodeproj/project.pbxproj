@@ -14,6 +14,7 @@
 		A124D96B22D8FFF50000E3D9 /* SharePhotoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A124D96A22D8FFF50000E3D9 /* SharePhotoVC.swift */; };
 		A124D96D22D9BDAB0000E3D9 /* Posts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A124D96C22D9BDAB0000E3D9 /* Posts.swift */; };
 		A124D96F22D9C27C0000E3D9 /* UserPostImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A124D96E22D9C27C0000E3D9 /* UserPostImageCell.swift */; };
+		A124D97322DA06A10000E3D9 /* HomeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A124D97222DA06A10000E3D9 /* HomeViewCell.swift */; };
 		A1730B0C22D79F7600B89362 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1730B0B22D79F7600B89362 /* HomeVC.swift */; };
 		A1AF2F2F22CFD50A00A29D35 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AF2F2E22CFD50A00A29D35 /* AppDelegate.swift */; };
 		A1AF2F3122CFD50A00A29D35 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AF2F3022CFD50A00A29D35 /* ViewController.swift */; };
@@ -42,6 +43,7 @@
 		A124D96A22D8FFF50000E3D9 /* SharePhotoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoVC.swift; sourceTree = "<group>"; };
 		A124D96C22D9BDAB0000E3D9 /* Posts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Posts.swift; sourceTree = "<group>"; };
 		A124D96E22D9C27C0000E3D9 /* UserPostImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostImageCell.swift; sourceTree = "<group>"; };
+		A124D97222DA06A10000E3D9 /* HomeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewCell.swift; sourceTree = "<group>"; };
 		A1730B0B22D79F7600B89362 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		A1AF2F2B22CFD50A00A29D35 /* Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1AF2F2E22CFD50A00A29D35 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -102,6 +104,42 @@
 			path = AddPhoto;
 			sourceTree = "<group>";
 		};
+		A124D97122DA06790000E3D9 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				A124D97422DA0BDF0000E3D9 /* Home */,
+				E639CD1922D5D9B800D87EE7 /* userProfile */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		A124D97422DA0BDF0000E3D9 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				A124D97222DA06A10000E3D9 /* HomeViewCell.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		A124D97522DA104B0000E3D9 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A1AF2F2E22CFD50A00A29D35 /* AppDelegate.swift */,
+				A1AF2F3022CFD50A00A29D35 /* ViewController.swift */,
+				A1AF2F3222CFD50A00A29D35 /* Main.storyboard */,
+				A1AF2F3722CFD53600A29D35 /* LaunchScreen.storyboard */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A124D97622DA107A0000E3D9 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E639CD1622D5C3BD00D87EE7 /* GoogleService-Info.plist */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		A1730B0A22D79EF700B89362 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,18 +170,15 @@
 		A1AF2F2D22CFD50A00A29D35 /* Instagram */ = {
 			isa = PBXGroup;
 			children = (
-				E639CD1D22D5DDFA00D87EE7 /* model */,
-				E639CD1922D5D9B800D87EE7 /* userProfile */,
-				A1AF2F4A22CFD60A00A29D35 /* Utils */,
-				A1AF2F4722CFD5F700A29D35 /* View */,
-				A1AF2F4222CFD5E900A29D35 /* extensions */,
-				A1AF2F2E22CFD50A00A29D35 /* AppDelegate.swift */,
-				A1AF2F3022CFD50A00A29D35 /* ViewController.swift */,
-				A1AF2F3222CFD50A00A29D35 /* Main.storyboard */,
-				A1AF2F3522CFD53600A29D35 /* Assets.xcassets */,
-				A1AF2F3722CFD53600A29D35 /* LaunchScreen.storyboard */,
 				A1AF2F3A22CFD53600A29D35 /* Info.plist */,
-				E639CD1622D5C3BD00D87EE7 /* GoogleService-Info.plist */,
+				A1AF2F3522CFD53600A29D35 /* Assets.xcassets */,
+				E639CD1D22D5DDFA00D87EE7 /* model */,
+				A1AF2F4722CFD5F700A29D35 /* View */,
+				A124D97122DA06790000E3D9 /* Cell */,
+				A1AF2F4222CFD5E900A29D35 /* extensions */,
+				A1AF2F4A22CFD60A00A29D35 /* Utils */,
+				A124D97622DA107A0000E3D9 /* Services */,
+				A124D97522DA104B0000E3D9 /* App */,
 			);
 			path = Instagram;
 			sourceTree = "<group>";
@@ -333,6 +368,7 @@
 				A1AF2F4922CFD5F700A29D35 /* SignupVC.swift in Sources */,
 				A124D96B22D8FFF50000E3D9 /* SharePhotoVC.swift in Sources */,
 				A124D96922D8ED080000E3D9 /* PhotoSelectorHeader.swift in Sources */,
+				A124D97322DA06A10000E3D9 /* HomeViewCell.swift in Sources */,
 				A124D96722D8DB280000E3D9 /* PhotoSelectorCell.swift in Sources */,
 				E639CD1322D5B76B00D87EE7 /* UserProfileController.swift in Sources */,
 				A124D96F22D9C27C0000E3D9 /* UserPostImageCell.swift in Sources */,
