@@ -22,12 +22,39 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         fetchUser()
         
         collectionView.register(UserProfileCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HEADER_CELL)
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: GRIDE_CELL)
+        collectionView.register(UserPostImageCell.self, forCellWithReuseIdentifier: GRIDE_CELL)
         
         
         setuplogoutButton()
         
         self.collectionView.reloadData()
+        fetchPost()
+    }
+    
+    var post = [Posts]()
+    
+    func fetchPost(){
+        guard let userID = Auth.auth().currentUser?.uid else {return}
+        
+        var ref: DatabaseReference!
+        ref = Database.database().reference().child("posts").child(userID)
+        ref.observe(.value, with: { (snap) in
+        guard let dictonaries =  snap.value as? [String : Any] else {return}
+            //  print(snap.value)
+            dictonaries.forEach({ (key, value) in
+                guard let dictionary = value as? [String: Any] else {return}
+                let post = Posts(dict: dictionary)
+               // let imageUrl = dictionary["imageUrl"] as? String
+             //   self.postImag.append(imageUrl)
+              //  print("image url\(self.post?.imageUrl)")
+                self.post.append(post)
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            })
+        }) { (_) in
+            print("Failed to fetch post")
+        }
     }
     
     func setuplogoutButton(){
@@ -68,12 +95,14 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 50
+        return post.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GRIDE_CELL, for: indexPath)
-        cell.backgroundColor = .red
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GRIDE_CELL, for: indexPath) as! UserPostImageCell
+        let api = post[indexPath.item]
+        let url = URL(string: api.imageUrl!)
+         cell.userProfileImage.sd_setImage(with: url, completed: nil)
         return cell
     }
     
