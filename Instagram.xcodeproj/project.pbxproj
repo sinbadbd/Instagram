@@ -31,6 +31,7 @@
 		E639CD1B22D5D9FA00D87EE7 /* UserProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E639CD1A22D5D9FA00D87EE7 /* UserProfileCell.swift */; };
 		E639CD1F22D5DE2300D87EE7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E639CD1E22D5DE2300D87EE7 /* User.swift */; };
 		E6D1DF4F22D735F200DBCEE6 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D1DF4E22D735F200DBCEE6 /* LoginVC.swift */; };
+		E6EAFD3A22DB5D3700D46C9A /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6EAFD3922DB5D3700D46C9A /* SearchVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		E639CD1A22D5D9FA00D87EE7 /* UserProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileCell.swift; sourceTree = "<group>"; };
 		E639CD1E22D5DE2300D87EE7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E6D1DF4E22D735F200DBCEE6 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		E6EAFD3922DB5D3700D46C9A /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +202,7 @@
 				E639CD1022D5B5A100D87EE7 /* MainTabBarController.swift */,
 				E639CD1222D5B76B00D87EE7 /* UserProfileController.swift */,
 				A1730B0B22D79F7600B89362 /* HomeVC.swift */,
+				E6EAFD3922DB5D3700D46C9A /* SearchVC.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -378,6 +381,7 @@
 				A1AF2F4522CFD5E900A29D35 /* UIView  + Constrains.swift in Sources */,
 				A1AF2F4622CFD5E900A29D35 /* extensions.swift in Sources */,
 				E639CD1B22D5D9FA00D87EE7 /* UserProfileCell.swift in Sources */,
+				E6EAFD3A22DB5D3700D46C9A /* SearchVC.swift in Sources */,
 				A1730B0C22D79F7600B89362 /* HomeVC.swift in Sources */,
 				E639CD1F22D5DE2300D87EE7 /* User.swift in Sources */,
 				A1AF2F4C22CFD60A00A29D35 /* Functions.swift in Sources */,
