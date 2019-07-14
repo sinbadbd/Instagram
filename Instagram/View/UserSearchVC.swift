@@ -7,7 +7,8 @@
 //
 
 import UIKit
-class SearchVC : UICollectionViewController, UISearchBarDelegate, UICollectionViewDelegateFlowLayout {
+import Firebase
+class UserSearchVC : UICollectionViewController, UISearchBarDelegate, UICollectionViewDelegateFlowLayout {
     
     let SEARCH = "search_id"
     fileprivate let searchBarController = UISearchController(searchResultsController: nil)
@@ -17,7 +18,7 @@ class SearchVC : UICollectionViewController, UISearchBarDelegate, UICollectionVi
         collectionView.backgroundColor = .white
         setupSearchController()
         
-        collectionView.register(SearchCell.self, forCellWithReuseIdentifier:  SEARCH )
+        collectionView.register(UserSearchCell.self, forCellWithReuseIdentifier:  SEARCH )
     }
     fileprivate func setupSearchController() {
         definesPresentationContext = true
@@ -27,18 +28,34 @@ class SearchVC : UICollectionViewController, UISearchBarDelegate, UICollectionVi
         searchBarController.searchBar.delegate = self
     }
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        fetchUser()
+    }
+    
+    func fetchUser(){
+        var ref: DatabaseReference!
+        ref = Database.database().reference().child("users") 
+        ref.observe(.value, with: { (snap) in
+            guard let userDictonary = snap.value as? [String : Any] else {return}
+            let user = User(dict: userDictonary)
+            print("u---\(user)")
+        }) { (_) in
+            print("could't fetch data!")
+        }
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return 50
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SEARCH, for: indexPath) as! SearchCell
-        cell.backgroundColor = .blue
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SEARCH, for: indexPath) as! UserSearchCell
+        //cell.backgroundColor = .blue
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 100)
+        return CGSize(width: view.frame.width, height: 60)
     }
     
 }

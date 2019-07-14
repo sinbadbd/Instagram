@@ -31,8 +31,8 @@
 		E639CD1B22D5D9FA00D87EE7 /* UserProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E639CD1A22D5D9FA00D87EE7 /* UserProfileCell.swift */; };
 		E639CD1F22D5DE2300D87EE7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E639CD1E22D5DE2300D87EE7 /* User.swift */; };
 		E6D1DF4F22D735F200DBCEE6 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D1DF4E22D735F200DBCEE6 /* LoginVC.swift */; };
-		E6EAFD3A22DB5D3700D46C9A /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6EAFD3922DB5D3700D46C9A /* SearchVC.swift */; };
-		E6EAFD3D22DB62A000D46C9A /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6EAFD3C22DB62A000D46C9A /* SearchCell.swift */; };
+		E6EAFD3A22DB5D3700D46C9A /* UserSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6EAFD3922DB5D3700D46C9A /* UserSearchVC.swift */; };
+		E6EAFD3D22DB62A000D46C9A /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6EAFD3C22DB62A000D46C9A /* UserSearchCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,8 +64,8 @@
 		E639CD1A22D5D9FA00D87EE7 /* UserProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileCell.swift; sourceTree = "<group>"; };
 		E639CD1E22D5DE2300D87EE7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E6D1DF4E22D735F200DBCEE6 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
-		E6EAFD3922DB5D3700D46C9A /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
-		E6EAFD3C22DB62A000D46C9A /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
+		E6EAFD3922DB5D3700D46C9A /* UserSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchVC.swift; sourceTree = "<group>"; };
+		E6EAFD3C22DB62A000D46C9A /* UserSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,7 +111,7 @@
 		A124D97122DA06790000E3D9 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				E6EAFD3B22DB627500D46C9A /* New Group */,
+				E6EAFD3B22DB627500D46C9A /* UserSearch */,
 				A124D97422DA0BDF0000E3D9 /* Home */,
 				E639CD1922D5D9B800D87EE7 /* userProfile */,
 			);
@@ -205,7 +205,7 @@
 				E639CD1022D5B5A100D87EE7 /* MainTabBarController.swift */,
 				E639CD1222D5B76B00D87EE7 /* UserProfileController.swift */,
 				A1730B0B22D79F7600B89362 /* HomeVC.swift */,
-				E6EAFD3922DB5D3700D46C9A /* SearchVC.swift */,
+				E6EAFD3922DB5D3700D46C9A /* UserSearchVC.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -237,12 +237,12 @@
 			path = model;
 			sourceTree = "<group>";
 		};
-		E6EAFD3B22DB627500D46C9A /* New Group */ = {
+		E6EAFD3B22DB627500D46C9A /* UserSearch */ = {
 			isa = PBXGroup;
 			children = (
-				E6EAFD3C22DB62A000D46C9A /* SearchCell.swift */,
+				E6EAFD3C22DB62A000D46C9A /* UserSearchCell.swift */,
 			);
-			path = "New Group";
+			path = UserSearch;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -386,14 +386,14 @@
 				A124D96722D8DB280000E3D9 /* PhotoSelectorCell.swift in Sources */,
 				E639CD1322D5B76B00D87EE7 /* UserProfileController.swift in Sources */,
 				A124D96F22D9C27C0000E3D9 /* UserPostImageCell.swift in Sources */,
-				E6EAFD3D22DB62A000D46C9A /* SearchCell.swift in Sources */,
+				E6EAFD3D22DB62A000D46C9A /* UserSearchCell.swift in Sources */,
 				A1AF2F2F22CFD50A00A29D35 /* AppDelegate.swift in Sources */,
 				E639CD1122D5B5A100D87EE7 /* MainTabBarController.swift in Sources */,
 				A124D96522D8C2BC0000E3D9 /* PhotoSelectorVC.swift in Sources */,
 				A1AF2F4522CFD5E900A29D35 /* UIView  + Constrains.swift in Sources */,
 				A1AF2F4622CFD5E900A29D35 /* extensions.swift in Sources */,
 				E639CD1B22D5D9FA00D87EE7 /* UserProfileCell.swift in Sources */,
-				E6EAFD3A22DB5D3700D46C9A /* SearchVC.swift in Sources */,
+				E6EAFD3A22DB5D3700D46C9A /* UserSearchVC.swift in Sources */,
 				A1730B0C22D79F7600B89362 /* HomeVC.swift in Sources */,
 				E639CD1F22D5DE2300D87EE7 /* User.swift in Sources */,
 				A1AF2F4C22CFD60A00A29D35 /* Functions.swift in Sources */,
