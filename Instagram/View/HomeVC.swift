@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import SDWebImage
 class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-
+    
     let HOME_CELL = "HOME_CELL"
     
     override func viewDidLoad() {
@@ -21,25 +21,38 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         fetchHomeData()
     }
     var post = [Posts]()
-
+    
     func fetchHomeData(){
         guard let userID = Auth.auth().currentUser?.uid else {return}
         
         var ref: DatabaseReference!
+        var refUser: DatabaseReference!
+
+        refUser = Database.database().reference().child("users").child(userID)
         ref = Database.database().reference().child("posts").child(userID)
-        ref.queryOrdered(byChild: "createDate").observe(.value, with: { (snap) in
-            guard let dictonaries =  snap.value as? [String : Any] else {return}
-            //  print(snap.value)
-            dictonaries.forEach({ (key, value) in
-                guard let dictionary = value as? [String: Any] else {return}
-                let post = Posts(dict: dictionary)
-                self.post.append(post)
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            })
+
+        refUser.observe(.value, with: { (snap) in
+            guard let userDictonary = snap.value as? [String : Any] else {return}
+            let user = User(dict: userDictonary)
+            
+            print("user:\(user)")
+            ref.queryOrdered(byChild: "createDate").observe(.value, with: { (snap) in
+                guard let dictonaries =  snap.value as? [String : Any] else {return}
+                //  print(snap.value)
+                dictonaries.forEach({ (key, value) in
+                    guard let dictionary = value as? [String: Any] else {return}
+                    //  var user =  User(dict: ["username" : "imaran"])
+                    let post = Posts(user: user, dict: dictionary)
+                    self.post.append(post)
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                    }
+                })
+            }) { (_) in
+                print("Failed to fetch post")
+            }
         }) { (_) in
-            print("Failed to fetch post")
+            print("could't fetch data!")
         }
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -49,8 +62,16 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HOME_CELL, for: indexPath) as! HomeViewCell
         let api = post[indexPath.item]
+        
         let url = URL(string: api.imageUrl!)
         cell.homeImg.sd_setImage(with: url, completed: nil)
+        cell.userNameLabel.text = api.user?.username
+        
+        let prifileUrl = URL(string: api.user!.profileImage)
+        cell.userProfileImg.sd_setImage(with: prifileUrl, completed: nil)
+        cell.captionLabel.text = api.caption
+        cell.userNameCpation.text = api.user?.username
+        cell.captionDate.text = api.createDate
         return cell
     }
     

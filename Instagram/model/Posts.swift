@@ -8,8 +8,15 @@
 
 import Foundation
 struct Posts {
+    let user : User?
     let imageUrl : String?
-    init(dict: [String: Any]) {
+    let caption : String
+    let createDate : String
+    init(user:User, dict: [String: Any]) {
+        self.user = user
         self.imageUrl = dict["imageUrl"] as? String ?? ""
+        self.caption = dict["caption"] as? String ?? ""
+        self.createDate = dict["createDate"] as? String  ?? ""
+
     }
 }

@@ -112,8 +112,8 @@ class LoginVC: UIViewController {
           //  self.navigationController?.popToViewController(profileVC, animated: true)
             
             
-            guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else {  return }
-           mainTabBarController.setupController()
+         //   guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else {  return }
+          // mainTabBarController.setupController()
             self.dismiss(animated: true, completion: nil)
 
         }

@@ -43,11 +43,11 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
             //  print(snap.value)
             dictonaries.forEach({ (key, value) in
                 guard let dictionary = value as? [String: Any] else {return}
-                let post = Posts(dict: dictionary)
-               // let imageUrl = dictionary["imageUrl"] as? String
-             //   self.postImag.append(imageUrl)
-              //  print("image url\(self.post?.imageUrl)")
-                self.post.append(post)
+                guard let user = self.user else {return}
+                let post = Posts(user: user, dict: dictionary)
+                print(post)
+                self.post.insert(post, at: 0)
+               // self.post.append(post)
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
