@@ -61,17 +61,17 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HOME_CELL, for: indexPath) as! HomeViewCell
-        let api = post[indexPath.item]
+        cell.post = post[indexPath.item]
+//
+//        let url = URL(string: api.imageUrl!)
+//        cell.homeImg.sd_setImage(with: url, completed: nil)
+//        cell.userNameLabel.text = api.user?.username
         
-        let url = URL(string: api.imageUrl!)
-        cell.homeImg.sd_setImage(with: url, completed: nil)
-        cell.userNameLabel.text = api.user?.username
-        
-        let prifileUrl = URL(string: api.user!.profileImage)
-        cell.userProfileImg.sd_setImage(with: prifileUrl, completed: nil)
-        cell.captionLabel.text = api.caption
-        cell.userNameCpation.text = api.user?.username
-        cell.captionDate.text = api.createDate
+     //   let prifileUrl = URL(string: api.user!.profileImage)
+       // cell.userProfileImg.sd_setImage(with: prifileUrl, completed: nil)
+      //  cell.captionLabel.text = api.caption
+      //  cell.userNameCpation.text = api.user?.username
+      //  cell.captionDate.text = api.createDate
         return cell
     }
     

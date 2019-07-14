@@ -7,15 +7,40 @@
 //
 
 import UIKit
+import SDWebImage
+
 class HomeViewCell: UICollectionViewCell {
     
     var post : Posts? {
         didSet {
-           // self.captionLabel.text = post?.caption
-          //  captionAttributeText()
+            self.captionLabel.text = post?.caption
+            
+            let url = URL(string: (post?.imageUrl)!)
+            self.homeImg.sd_setImage(with: url, completed: nil)
+            self.userNameLabel.text = post?.user?.username
+            let prifileUrl = URL(string: (post?.imageUrl)!)
+            self.userProfileImg.sd_setImage(with: prifileUrl, completed: nil)
+            
+            
+            setupAttributedCaption()
         }
     }
-    
+    func setupAttributedCaption (){
+        guard let post = self.post else { return }
+        
+        guard let username = post.user?.username else {return}
+        
+        let attributedText = NSMutableAttributedString(string: username, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+        
+        attributedText.append(NSAttributedString(string: " \(post.caption)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)]))
+        
+        attributedText.append(NSAttributedString(string: "\n\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
+        
+        attributedText.append(NSAttributedString(string: "1 week ago", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        
+        captionLabel.attributedText = attributedText
+        
+    }
     
     let homeImg: UIImageView = {
         let imageV  = UIImageView()
@@ -74,46 +99,17 @@ class HomeViewCell: UICollectionViewCell {
         return button
     }()
     let captionLabel: UILabel = {
-        
-        let label = UILabel()
-        //        label.text = "SOMETHING FOR NOW"
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    let userNameCpation : UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 1
-        label.font = UIFont.boldSystemFont(ofSize: 14)
-        return label
-    }()
-    let captionDate : UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.textColor = UIColor.gray
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.text = "haha"
+        label.translatesAutoresizingMaskIntoConstraints = false
+       // label.backgroundColor = .blue
         return label
     }()
-    func captionAttributeText (){
-        
-        guard let post = self.post else {
-            return
-        }
-        let attributedText = NSMutableAttributedString(string: "\(String(describing: post.user?.username))", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        
-        print(attributedText, "-----")
-        attributedText.append(NSAttributedString(string: "\(post.user?.username)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)]))
-        
-        attributedText.append(NSAttributedString(string: "\n\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
-        
-        attributedText.append(NSAttributedString(string: "\(post.createDate)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray]))
-        
-        captionLabel.attributedText = attributedText
 
-    }
     override init(frame: CGRect) {
         super.init(frame: frame)
-       // backgroundColor = .green
+      //  backgroundColor = .green
         addSubview(userProfileImg)
         addSubview(userNameLabel)
         addSubview(optionButton)
@@ -131,13 +127,17 @@ class HomeViewCell: UICollectionViewCell {
         homeImg.anchor(top: userProfileImg.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 10, left: 0, bottom: 0, right: 0), size: CGSize(width: homeImg.frame.width, height: 300))
         
         setupInputFields()
+
+        addSubview(captionLabel)
+        captionLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        captionLabel.anchor(top: likeButton.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,  padding: .init(top: 0, left: 10, bottom: 10, right: 10),size: CGSize(width: captionLabel.frame.width, height: captionLabel.frame.height))
+     //   captionLabel.backgroundColor = .red
+        
     }
     
     func setupInputFields(){
       
-//        let inputView = UIView()
-//        inputView.translatesAutoresizingMaskIntoConstraints = false
-//        inputView.backgroundColor = .red
         let stackview = UIStackView(arrangedSubviews: [likeButton,commentButton,sendMessageButton])
         
         stackview.translatesAutoresizingMaskIntoConstraints = false
@@ -151,18 +151,7 @@ class HomeViewCell: UICollectionViewCell {
         addSubview(bookmarksButton)
 
        bookmarksButton.anchor(top: homeImg.bottomAnchor, leading: nil, bottom: nil, trailing: trailingAnchor, padding: .init(top: 10, left: 0, bottom: 0, right: 10), size: CGSize(width: 40, height: 40))
-      
-        addSubview(userNameCpation)
-        userNameCpation.anchor(top: bookmarksButton.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 10, bottom: 0, right: 0), size: CGSize(width: 100, height: 20))
-        userNameCpation.backgroundColor = .red
-        
-        addSubview(captionLabel)
-        captionLabel.anchor(top: bookmarksButton.bottomAnchor, leading: userNameCpation.trailingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 0, left: 10, bottom: 10, right: 10))
-        captionLabel.backgroundColor = .red
-        
-        addSubview(captionDate)
-        captionDate.anchor(top: userNameCpation.bottomAnchor, leading: leadingAnchor , bottom: nil, trailing: trailingAnchor, padding: .init(top: 5, left: 10, bottom: 10, right: 10))
-        captionDate.backgroundColor = .red
+
      }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
