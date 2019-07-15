@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import SDWebImage
 
-class UserProfileCell: UICollectionViewCell {
+class UserProfileHeaderCell: UICollectionViewCell {
     
     
     
@@ -20,9 +20,76 @@ class UserProfileCell: UICollectionViewCell {
             let url = URL(string: profileImage)
             self.userProfileImage.sd_setImage(with: url, completed: nil)
             self.usernameLabel.text = user?.username
+            setupEditFollowButton()
         }
     }
     
+    func setupEditFollowButton(){
+        guard let currentLoggedInUserId = Auth.auth().currentUser?.uid else {return}
+        guard let userId = user?.uid else { return }
+        if currentLoggedInUserId == userId {
+            // Edit profile
+        } else {
+            // check if following
+            
+            Database.database().reference()
+                .child("following").child(currentLoggedInUserId).child(userId)
+                .observe(.value, with: { (snap) in
+                    
+                    if let isFollowing = snap.value as? Int, isFollowing == 1 {
+                        
+                        self.editProfileButton.setTitle("UnFollow", for: .normal)
+                        
+                    } else {
+                        self.setupFollowingStyle()
+                    }
+                    
+                }) { (err) in
+                    print("Failed to check if follwing", err)
+            }
+        }
+    }
+    func setupFollowingStyle(){
+        
+        self.editProfileButton.setTitle("Follow", for: .normal)
+        self.editProfileButton.backgroundColor = UIColor.rgb(red: 17, green: 154, blue: 237)
+        self.editProfileButton.setTitleColor(.white, for: .normal)
+        self.editProfileButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
+    }
+    
+    @objc func handleFollowButtonOrEdit(){
+        
+        guard let currentLoggedInUserId = Auth.auth().currentUser?.uid else { return }
+        guard let userId = user?.uid else { return }
+        
+        
+        if editProfileButton.titleLabel?.text == "UnFollow" {
+            
+            Database.database().reference().child("following")
+                .child(currentLoggedInUserId).child(userId).removeValue { (err, ref) in
+                    if let err = err {
+                        print(err)
+                    }
+                    
+                    print("successfully unfollow user", self.user?.username ?? "")
+                    self.setupFollowingStyle()
+            }
+        } else {
+            
+            let ref = Database.database().reference().child("following").child(currentLoggedInUserId)
+            
+            let value = [userId: 1]
+            ref.updateChildValues(value) { (error, ref) in
+                if error != nil {
+                    print("Failed to follow user!")
+                }
+                print("Successfully followed use:", self.user?.username ?? "")
+                self.editProfileButton.setTitle("UnFollow", for: .normal)
+                self.editProfileButton.backgroundColor = .white
+                self.editProfileButton.setTitleColor(.black, for: .normal)
+            }
+        }
+    }
     
     
     let userProfileImage: UIImageView = {
@@ -68,11 +135,11 @@ class UserProfileCell: UICollectionViewCell {
         label.text = "0"
         let font = UIFont.boldSystemFont(ofSize: 14)
         
-      //  let attributedText = NSMutableAttributedString(string: "11\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+        //  let attributedText = NSMutableAttributedString(string: "11\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
         
         //attributedText.append(NSAttributedString(string: "posts", attributes: [NSAttributedString.Key.foregroundColor: UIColor.red, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)]))
         
-       // label.attributedText = attributedText
+        // label.attributedText = attributedText
         label.textAlignment = .center
         return label
     }()
@@ -117,20 +184,21 @@ class UserProfileCell: UICollectionViewCell {
         label.textAlignment = .center
         return label
     }()
- 
+    
     let topBorderView : UIView = UIView()
     let bottomBorderView : UIView = UIView()
     
-    let editProfileButton:UIButton = {
+    lazy var editProfileButton:UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Edit Profile", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 4
-        //button.addTarget(self, action: #selector(handlePhoto), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleFollowButtonOrEdit), for: .touchUpInside)
         return button
     }()
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -138,10 +206,10 @@ class UserProfileCell: UICollectionViewCell {
         userProfileImage.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: CGSize(width: 80, height: 80))
         addSubview(usernameLabel)
         usernameLabel.anchor(top: userProfileImage.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 30, bottom: 0, right: 10), size: CGSize(width: 50, height: usernameLabel.frame.height))
-    
+        
         
         setupProfileTools()
-       // fetchUserProfile()
+        // fetchUserProfile()
         setupBottomToolBar()
     }
     func setupProfileTools(){
@@ -187,9 +255,9 @@ class UserProfileCell: UICollectionViewCell {
         bottomBorderView.translatesAutoresizingMaskIntoConstraints = false
         bottomBorderView.anchor(top: stackview.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, size: CGSize(width: topBorderView.frame.width, height: 0.5))
         bottomBorderView.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-
+        
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
