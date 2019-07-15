@@ -16,24 +16,25 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     
     var user : User?
     
+    var userId : String?
+    
     override func viewDidLoad() {
         collectionView.backgroundColor = .white
-        navigationItem.title = Auth.auth().currentUser?.uid
-        fetchUser()
+        //navigationItem.title = Auth.auth().currentUser?.uid
         
         collectionView.register(UserProfileCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HEADER_CELL)
         collectionView.register(UserPostImageCell.self, forCellWithReuseIdentifier: GRIDE_CELL)
-        
+        self.collectionView.reloadData()
         
         setuplogoutButton()
-        
-        self.collectionView.reloadData()
+        fetchUser()
         fetchPost()
     }
     
     var post = [Posts]()
     
     func fetchPost(){
+    // guard   let userID = userId ?? Auth.auth().currentUser?.uid
         guard let userID = Auth.auth().currentUser?.uid else {return}
         
         var ref: DatabaseReference!
@@ -47,7 +48,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
                 let post = Posts(user: user, dict: dictionary)
                 print(post)
                 self.post.insert(post, at: 0)
-               // self.post.append(post)
+                self.post.append(post)
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
@@ -118,20 +119,30 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     }
     
     func fetchUser() {
-        guard let userID = Auth.auth().currentUser?.uid else {return}
         
-        var ref: DatabaseReference!
-        ref = Database.database().reference()
-        ref.child("users").child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
-            // Get user value
-            print(snapshot)
-            guard let dictonary = snapshot.value as? [String : Any] else {return}            
-            self.user = User(dict: dictonary)
-            self.navigationItem.title = self.user?.username
-            
-            
-        }) { (error) in
-            print(error.localizedDescription)
+        let userID = userId ?? Auth.auth().currentUser?.uid ?? ""
+        
+        Database.fetchUserWithUID(uid: userID) { (user) in
+            self.user = user
+            self.navigationItem.title = user.username
+            self.collectionView?.reloadData()
         }
+        
+        
+        //guard let userID = Auth.auth().currentUser?.uid else {return}
+        
+//        var ref: DatabaseReference!
+//        ref = Database.database().reference()
+//        ref.child("users").child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
+//            // Get user value
+//            print(snapshot)
+//            guard let dictonary = snapshot.value as? [String : Any] else {return}
+//            self.user = User(uid: userID, dict: dictonary)
+//            self.navigationItem.title = self.user?.username
+//
+//
+//        }) { (error) in
+//            print(error.localizedDescription)
+//        }
     }
 }

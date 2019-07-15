@@ -191,7 +191,7 @@ class UserProfileCell: UICollectionViewCell {
             guard let dictonary = snapshot.value as? [String : Any] else {return}
             
             let imageURL = dictonary["profileImageUrl"] as? String ?? "" 
-            let user = User(dict: dictonary)
+            let user = User(uid: userID, dict: dictonary)
             self.userProfileImage.sd_setImage(with: URL(string: user.profileImage), placeholderImage: #imageLiteral(resourceName: "plus_photo"))
             self.usernameLabel.text = user.username
         }) { (error) in

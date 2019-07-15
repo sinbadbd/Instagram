@@ -108,14 +108,14 @@ class LoginVC: UIViewController {
             }
             print("Successfullty login....", user?.user.uid ?? "")
             
-        //    let profileVC = HomeVC()
+          let profileVC = HomeVC(collectionViewLayout: UICollectionViewFlowLayout())
           //  self.present(profileVC, animated: true, completion: nil)
-          //  self.navigationController?.pushViewController(profileVC, animated: true)
+            self.navigationController?.pushViewController(profileVC, animated: true)
             
             
 //            guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else {  return }
 //           mainTabBarController.setupController()
-           self.dismiss(animated: true, completion: nil)
+         //  self.dismiss(animated: true, completion: nil)
 
         }
     }

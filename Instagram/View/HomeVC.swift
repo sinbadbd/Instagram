@@ -25,17 +25,22 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     func fetchHomeData(){
         guard let userID = Auth.auth().currentUser?.uid else {return}
         
+        Database.fetchUserWithUID(uid: userID) { (user) in
+            self.fetchPostsWithUser(user: user)
+        }
+        
+    }
+    
+    
+    func fetchPostsWithUser(user: User){
         var ref: DatabaseReference!
-        var refUser: DatabaseReference!
-
-        refUser = Database.database().reference().child("users").child(userID)
-        ref = Database.database().reference().child("posts").child(userID)
-
-        refUser.observe(.value, with: { (snap) in
+        ref = Database.database().reference().child("posts").child(user.uid)
+        
+        ref.observe(.value, with: { (snap) in
             guard let userDictonary = snap.value as? [String : Any] else {return}
-            let user = User(dict: userDictonary)
+            let user = User(uid: user.uid, dict: userDictonary)
             
-            print("user:\(user)")
+            //  print("user:\(user)")
             ref.queryOrdered(byChild: "createDate").observe(.value, with: { (snap) in
                 guard let dictonaries =  snap.value as? [String : Any] else {return}
                 //  print(snap.value)
@@ -51,10 +56,10 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
             }) { (_) in
                 print("Failed to fetch post")
             }
-        }) { (_) in
-            print("could't fetch data!")
-        }
+        })
     }
+    
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return post.count
         

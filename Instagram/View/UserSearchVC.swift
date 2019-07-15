@@ -47,11 +47,18 @@ class UserSearchVC : UICollectionViewController, UISearchBarDelegate, UICollecti
         ref = Database.database().reference().child("users")
         ref.observe(.value, with: { (snap) in
             guard let userDictonaries = snap.value as? [String : Any] else {return}
+            
          //   let user = User(dict: userDictonaries)
             userDictonaries.forEach({ (key, value) in
+                
+                if key == Auth.auth().currentUser?.uid{
+                    print(key)
+                    return
+                }
+                
                 guard let userDic = value as? [String : Any] else {return}
                 
-                let user = User(dict: userDic)
+                let user = User( uid: key, dict: userDic)
                 self.user.append(user)
             })
             
@@ -65,6 +72,16 @@ class UserSearchVC : UICollectionViewController, UISearchBarDelegate, UICollecti
             print("could't fetch data!")
         }
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let user = filterUser[indexPath.item]
+        print("user-name:\(user.username)")
+        let profileVC = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
+        profileVC.userId = user.uid
+        self.navigationController?.pushViewController(profileVC, animated: true)
+        print(select)
+    }
+    
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return filterUser.count
