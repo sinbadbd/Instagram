@@ -37,8 +37,8 @@ class UserSearchVC : UICollectionViewController, UISearchBarDelegate, UICollecti
             filterUser = self.user.filter({ (user) -> Bool in
                 return user.username.lowercased().contains(searchText.lowercased())
             })
-            self.collectionView.reloadData()
         }
+        self.collectionView.reloadData()
     }
     var filterUser = [User]()
     var user = [User]()
