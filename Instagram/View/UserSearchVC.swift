@@ -20,6 +20,7 @@ class UserSearchVC : UICollectionViewController, UISearchBarDelegate, UICollecti
         setupSearchController()
         
         collectionView.register(UserSearchCell.self, forCellWithReuseIdentifier:  SEARCH )
+        fetchUser()
     }
     fileprivate func setupSearchController() {
         definesPresentationContext = true
@@ -30,8 +31,16 @@ class UserSearchVC : UICollectionViewController, UISearchBarDelegate, UICollecti
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        fetchUser()
+        if searchText.isEmpty {
+            filterUser = user
+        } else {
+            filterUser = self.user.filter({ (user) -> Bool in
+                return user.username.lowercased().contains(searchText.lowercased())
+            })
+            self.collectionView.reloadData()
+        }
     }
+    var filterUser = [User]()
     var user = [User]()
     func fetchUser(){
         var ref: DatabaseReference!
@@ -46,6 +55,11 @@ class UserSearchVC : UICollectionViewController, UISearchBarDelegate, UICollecti
                 self.user.append(user)
             })
             
+            self.user.sort(by: { (u1, u2) -> Bool in
+                	return u1.username.compare(u2.username) == .orderedAscending
+            })
+            
+            self.filterUser = self.user
             self.collectionView.reloadData()
         }) { (_) in
             print("could't fetch data!")
@@ -53,12 +67,12 @@ class UserSearchVC : UICollectionViewController, UISearchBarDelegate, UICollecti
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return user.count
+        return filterUser.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SEARCH, for: indexPath) as! UserSearchCell
-        let api = user[indexPath.item]
+        let api = filterUser[indexPath.item]
         cell.usernameLabel.text  = api.username
         
         let prifileUrl = URL(string: api.profileImage)
