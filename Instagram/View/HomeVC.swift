@@ -35,7 +35,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
                 })
             }) { (err) in
                 print(err)
-        } 
+        }
     }
     
     
@@ -61,7 +61,9 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
                 
                 self.post.append(post)
             })
-            
+            self.post.sort(by: { (p1, p2) -> Bool in
+                return p1.createDate.compare(p2.createDate) == .orderedDescending
+            })
             self.collectionView?.reloadData()
             
         }) { (err) in
