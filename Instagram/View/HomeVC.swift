@@ -30,36 +30,25 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         }
         
     }
-    
-    
-    func fetchPostsWithUser(user: User){
-        var ref: DatabaseReference!
-        ref = Database.database().reference().child("posts").child(user.uid)
-        
-        ref.observe(.value, with: { (snap) in
-            guard let userDictonary = snap.value as? [String : Any] else {return}
-            let user = User(uid: user.uid, dict: userDictonary)
+    fileprivate func fetchPostsWithUser(user: User) {
+        let ref = Database.database().reference().child("posts").child(user.uid)
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let dictionaries = snapshot.value as? [String: Any] else { return }
             
-            //  print("user:\(user)")
-            ref.queryOrdered(byChild: "createDate").observe(.value, with: { (snap) in
-                guard let dictonaries =  snap.value as? [String : Any] else {return}
-                //  print(snap.value)
-                dictonaries.forEach({ (key, value) in
-                    guard let dictionary = value as? [String: Any] else {return}
-                    //  var user =  User(dict: ["username" : "imaran"])
-                    let post = Posts(user: user, dict: dictionary)
-                    self.post.append(post)
-                    DispatchQueue.main.async {
-                        self.collectionView.reloadData()
-                    }
-                })
-            }) { (_) in
-                print("Failed to fetch post")
-            }
-        })
+            dictionaries.forEach({ (key, value) in
+                guard let dictionary = value as? [String: Any] else { return }
+                
+                let post = Posts(user: user, dict: dictionary)
+                
+                self.post.append(post)
+            })
+            
+            self.collectionView?.reloadData()
+            
+        }) { (err) in
+            print("Failed to fetch posts:", err)
+        }
     }
-    
-    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return post.count
         

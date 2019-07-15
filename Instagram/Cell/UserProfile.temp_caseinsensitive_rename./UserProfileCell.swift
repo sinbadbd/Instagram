@@ -1,5 +1,5 @@
 //
-//  UserProfileCell.swift
+//  UserProfileHeaderCell.swift
 //  Instagram
 //
 //  on 10/7/19.
@@ -11,6 +11,19 @@ import Firebase
 import SDWebImage
 
 class UserProfileCell: UICollectionViewCell {
+    
+    
+    
+    var user: User? {
+        didSet {
+            guard let profileImage = user?.profileImage else {return}
+            let url = URL(string: profileImage)
+            self.userProfileImage.sd_setImage(with: url, completed: nil)
+            self.usernameLabel.text = user?.username
+        }
+    }
+    
+    
     
     let userProfileImage: UIImageView = {
         let image = UIImageView()
@@ -128,7 +141,7 @@ class UserProfileCell: UICollectionViewCell {
     
         
         setupProfileTools()
-        fetchUserProfile()
+       // fetchUserProfile()
         setupBottomToolBar()
     }
     func setupProfileTools(){
@@ -176,29 +189,7 @@ class UserProfileCell: UICollectionViewCell {
         bottomBorderView.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
 
     }
-    
-    
-    var user : User?
-    
-    func fetchUserProfile() {
-        guard let userID = Auth.auth().currentUser?.uid else {return}
-        
-        var ref: DatabaseReference!
-        ref = Database.database().reference()
-        ref.child("users").child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
-            // Get user value
-            print(snapshot)
-            guard let dictonary = snapshot.value as? [String : Any] else {return}
-            
-            let imageURL = dictonary["profileImageUrl"] as? String ?? "" 
-            let user = User(uid: userID, dict: dictonary)
-            self.userProfileImage.sd_setImage(with: URL(string: user.profileImage), placeholderImage: #imageLiteral(resourceName: "plus_photo"))
-            self.usernameLabel.text = user.username
-        }) { (error) in
-            print(error.localizedDescription)
-        }
-    }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -28,33 +28,30 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         
         setuplogoutButton()
         fetchUser()
-        fetchPost()
     }
     
     var post = [Posts]()
     
     func fetchPost(){
     // guard   let userID = userId ?? Auth.auth().currentUser?.uid
-        guard let userID = Auth.auth().currentUser?.uid else {return}
+        guard let userID = self.user?.uid else {return}
         
         var ref: DatabaseReference!
         ref = Database.database().reference().child("posts").child(userID)
-        ref.queryOrdered(byChild: "createDate").observe(.value, with: { (snap) in
-        guard let dictonaries =  snap.value as? [String : Any] else {return}
-            //  print(snap.value)
-            dictonaries.forEach({ (key, value) in
-                guard let dictionary = value as? [String: Any] else {return}
-                guard let user = self.user else {return}
-                let post = Posts(user: user, dict: dictionary)
-                print(post)
-                self.post.insert(post, at: 0)
-                self.post.append(post)
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            })
-        }) { (_) in
-            print("Failed to fetch post")
+       
+        //perhaps later on we'll implement some pagination of data
+        ref.queryOrdered(byChild: "creationDate").observe(.childAdded, with: { (snapshot) in
+            guard let dictionary = snapshot.value as? [String: Any] else { return }
+            
+            guard let user = self.user else { return }
+            
+            let post = Posts(user: user, dict: dictionary)
+            self.post.insert(post, at: 0)
+            
+            self.collectionView?.reloadData()
+            
+        }) { (err) in
+            print("Failed to fetch ordered posts:", err)
         }
     }
     
@@ -85,7 +82,8 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HEADER_CELL, for: indexPath)
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HEADER_CELL, for: indexPath) as! UserProfileCell
+        header.user = self.user
         // header.backgroundColor = .green
         return header
     }
@@ -126,23 +124,8 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
             self.user = user
             self.navigationItem.title = user.username
             self.collectionView?.reloadData()
+            self.fetchPost()
         }
-        
-        
-        //guard let userID = Auth.auth().currentUser?.uid else {return}
-        
-//        var ref: DatabaseReference!
-//        ref = Database.database().reference()
-//        ref.child("users").child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
-//            // Get user value
-//            print(snapshot)
-//            guard let dictonary = snapshot.value as? [String : Any] else {return}
-//            self.user = User(uid: userID, dict: dictonary)
-//            self.navigationItem.title = self.user?.username
-//
-//
-//        }) { (error) in
-//            print(error.localizedDescription)
-//        }
+
     }
 }
