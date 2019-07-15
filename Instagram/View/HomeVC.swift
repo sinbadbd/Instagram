@@ -18,8 +18,27 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         collectionView.backgroundColor  = .white
         // Do any additional setup after loading the view.
         collectionView.register(HomeViewCell.self, forCellWithReuseIdentifier:  HOME_CELL)
-        fetchHomeData() 
+        fetchHomeData()
+        fetchFollowingUserIDs()
     }
+    
+    func fetchFollowingUserIDs(){
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        
+        Database.database().reference().child("following").child(uid)
+            .observeSingleEvent(of: .value, with: { (snap) in
+                guard let userIdsDictionary = snap.value as? [String: Any]  else { return }
+                userIdsDictionary.forEach({ (key, value) in
+                    Database.fetchUserWithUID(uid: key, completion: { (user) in
+                        self.fetchPostsWithUser(user: user)
+                    })
+                })
+            }) { (err) in
+                print(err)
+        } 
+    }
+    
+    
     var post = [Posts]()
     
     func fetchHomeData(){
