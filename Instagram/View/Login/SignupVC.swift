@@ -8,7 +8,7 @@ class SignupVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        navigationController?.isNavigationBarHidden = true
+      //  navigationController?.isNavigationBarHidden = true
         view.addSubview(plusButton)
         plusButton.translatesAutoresizingMaskIntoConstraints = false
         plusButton.anchor(top: view.topAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 80, left: 20, bottom: 0, right: 20), size: CGSize(width: 140, height: 140))
@@ -73,6 +73,8 @@ class SignupVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     @objc func handleSignIn(){
         let loginVC = LoginVC()
         self.navigationController?.pushViewController(loginVC, animated: true)
+       // self.present(loginVC, animated: true, completion: nil)
+
     }
     
     let emailTextField : UITextField = {
@@ -189,7 +191,8 @@ class SignupVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
                         
                         let login = LoginVC()
                         DispatchQueue.main.async {
-                            self.navigationController?.pushViewController(login, animated: true)
+                           // self.navigationController?.pushViewController(login, animated: true)
+                            self.present(login, animated: true, completion: nil)
                         }
                         print("Successfully saved user info to db")
                         

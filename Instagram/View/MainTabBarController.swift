@@ -33,8 +33,8 @@ class MainTabBarController : UITabBarController , UITabBarControllerDelegate{
             // ...
             DispatchQueue.main.async {
                 let loginVC = LoginVC()
-              //  let navigationController = UINavigationController(rootViewController: loginVC)
-                self.present(loginVC, animated: true, completion: nil)
+                let navigationController = UINavigationController(rootViewController: loginVC)
+                self.present(navigationController, animated: true, completion: nil)
             }
             return
         }
@@ -62,7 +62,7 @@ class MainTabBarController : UITabBarController , UITabBarControllerDelegate{
               //  viewControllers = [homeNavController, userProfileNavController]
         
         viewControllers  = [
-            homeVC, searchNavController,plusNavController,likeNavController,userProfileNavController 
+            homeVC, searchNavController,plusNavController,likeNavController,userProfileNavController
         ]
         
         //modify tab bar item insets

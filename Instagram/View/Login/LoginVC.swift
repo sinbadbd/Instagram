@@ -16,14 +16,15 @@ class LoginVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .white
         view.addSubview(signupButton)
         signupButton.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor,padding: .init(top: 0, left: 0, bottom: 40, right: 0))
         // Do any additional setup after loading the view.
         
         setupInputFields()
-       // self.tabBarController?.tabBar.isHidden = true
+        
+        navigationController?.isNavigationBarHidden = true
+        self.tabBarController?.tabBar.isHidden = true
 
     }
     
@@ -49,7 +50,9 @@ class LoginVC: UIViewController {
     
     @objc func handleSignup(){
         let signupVC = SignupVC()
-        self.navigationController?.pushViewController(signupVC, animated: true)
+       self.navigationController?.pushViewController(signupVC, animated: true)
+        //self.present(signupVC, animated: true, completion: nil)
+
     }
     
     let emailTextField : UITextField = {
@@ -64,12 +67,22 @@ class LoginVC: UIViewController {
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: textField.frame.height))
         textField.leftView = paddingView
         textField.leftViewMode = UITextField.ViewMode.always
-        
-        
+        textField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
         return textField
     }()
     
     
+    @objc func handleTextInputChange(){
+        let isFormValid = emailTextField.text?.isEmpty == false && passwordTextField.text?.isEmpty == false
+
+        if isFormValid {
+            signinButton.isEnabled = true
+            signinButton.backgroundColor = UIColor.rgb(red: 17, green: 154, blue: 237)
+        } else {
+            signinButton.isEnabled = false
+            signinButton.backgroundColor = UIColor.rgb(red: 149, green: 204, blue: 244)
+        }
+    }
     
     let passwordTextField : UITextField = {
         let textField = UITextField()
@@ -84,7 +97,7 @@ class LoginVC: UIViewController {
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: textField.frame.height))
         textField.leftView = paddingView
         textField.leftViewMode = UITextField.ViewMode.always
-        
+        textField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
         return textField
     }()
     
@@ -108,13 +121,13 @@ class LoginVC: UIViewController {
             }
             print("Successfullty login....", user?.user.uid ?? "")
 
-           // let profileVC = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
+         //  let profileVC = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
            //self.present(profileVC, animated: true, completion: nil)
-           // self.navigationController?.pushViewController(profileVC, animated: true)
+         //  self.navigationController?.pushViewController(profileVC, animated: true)
             
             
            guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else {  return }
-            mainTabBarController.setupController()
+           mainTabBarController.setupController()
             self.dismiss(animated: true, completion: nil)
 
         }
