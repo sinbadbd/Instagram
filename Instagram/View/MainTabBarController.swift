@@ -25,21 +25,20 @@ class MainTabBarController : UITabBarController , UITabBarControllerDelegate{
     
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         self.delegate = self
-        let loginVC = LoginVC()
-        
         if Auth.auth().currentUser == nil {
             // User is signed in.
             // ...
             DispatchQueue.main.async {
-                let navigationController = UINavigationController(rootViewController: loginVC)
-                self.present(navigationController, animated: true, completion: nil)
+                let loginVC = LoginVC()
+              //  let navigationController = UINavigationController(rootViewController: loginVC)
+                self.present(loginVC, animated: true, completion: nil)
             }
-        } else {
-            // No user is signed in.
-            // ...
+            return
         }
-        navigationController?.isNavigationBarHidden = true
+      //  navigationController?.isNavigationBarHidden = true
         
         setupController()
     }
@@ -63,8 +62,7 @@ class MainTabBarController : UITabBarController , UITabBarControllerDelegate{
               //  viewControllers = [homeNavController, userProfileNavController]
         
         viewControllers  = [
-            homeVC, searchNavController,plusNavController,likeNavController,userProfileNavController
-            //  setupNavigationVC(viewController: HomeVC(), title: "Home", imageName: "home")
+            homeVC, searchNavController,plusNavController,likeNavController,userProfileNavController 
         ]
         
         //modify tab bar item insets
