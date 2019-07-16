@@ -18,41 +18,56 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         collectionView.backgroundColor  = .white
         // Do any additional setup after loading the view.
         collectionView.register(HomeViewCell.self, forCellWithReuseIdentifier:  HOME_CELL)
-        fetchHomeData() 
+        fetchHomeData()
+        fetchFollowingUserIDs()
     }
+    
+    func fetchFollowingUserIDs(){
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        
+        Database.database().reference().child("following").child(uid)
+            .observeSingleEvent(of: .value, with: { (snap) in
+                guard let userIdsDictionary = snap.value as? [String: Any]  else { return }
+                userIdsDictionary.forEach({ (key, value) in
+                    Database.fetchUserWithUID(uid: key, completion: { (user) in
+                        self.fetchPostsWithUser(user: user)
+                    })
+                })
+            }) { (err) in
+                print(err)
+        }
+    }
+    
+    
     var post = [Posts]()
     
     func fetchHomeData(){
         guard let userID = Auth.auth().currentUser?.uid else {return}
         
-        var ref: DatabaseReference!
-        var refUser: DatabaseReference!
-
-        refUser = Database.database().reference().child("users").child(userID)
-        ref = Database.database().reference().child("posts").child(userID)
-
-        refUser.observe(.value, with: { (snap) in
-            guard let userDictonary = snap.value as? [String : Any] else {return}
-            let user = User(dict: userDictonary)
+        Database.fetchUserWithUID(uid: userID) { (user) in
+            self.fetchPostsWithUser(user: user)
+        }
+        
+    }
+    fileprivate func fetchPostsWithUser(user: User) {
+        let ref = Database.database().reference().child("posts").child(user.uid)
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let dictionaries = snapshot.value as? [String: Any] else { return }
             
-            print("user:\(user)")
-            ref.queryOrdered(byChild: "createDate").observe(.value, with: { (snap) in
-                guard let dictonaries =  snap.value as? [String : Any] else {return}
-                //  print(snap.value)
-                dictonaries.forEach({ (key, value) in
-                    guard let dictionary = value as? [String: Any] else {return}
-                    //  var user =  User(dict: ["username" : "imaran"])
-                    let post = Posts(user: user, dict: dictionary)
-                    self.post.append(post)
-                    DispatchQueue.main.async {
-                        self.collectionView.reloadData()
-                    }
-                })
-            }) { (_) in
-                print("Failed to fetch post")
-            }
-        }) { (_) in
-            print("could't fetch data!")
+            dictionaries.forEach({ (key, value) in
+                guard let dictionary = value as? [String: Any] else { return }
+                
+                let post = Posts(user: user, dict: dictionary)
+                
+                self.post.append(post)
+            })
+            self.post.sort(by: { (p1, p2) -> Bool in
+                return p1.createDate.compare(p2.createDate) == .orderedDescending
+            })
+            self.collectionView?.reloadData()
+            
+        }) { (err) in
+            print("Failed to fetch posts:", err)
         }
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

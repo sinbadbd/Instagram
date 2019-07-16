@@ -29,7 +29,7 @@ class LoginVC: UIViewController {
     
     let logoView : UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 63, green: 114, blue: 155)
+        view.backgroundColor = UIColor.rgb(red: 17, green: 154, blue: 237)
         return view
     }()
     
@@ -107,15 +107,15 @@ class LoginVC: UIViewController {
                 return
             }
             print("Successfullty login....", user?.user.uid ?? "")
-            
-        //    let profileVC = HomeVC()
-          //  self.present(profileVC, animated: true, completion: nil)
-          //  self.navigationController?.pushViewController(profileVC, animated: true)
+            self.dismiss(animated: true, completion: nil)
+
+            let profileVC = HomeVC(collectionViewLayout: UICollectionViewFlowLayout())
+            self.present(profileVC, animated: true, completion: nil)
+           // self.navigationController?.pushViewController(profileVC, animated: true)
             
             
 //            guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else {  return }
 //           mainTabBarController.setupController()
-           self.dismiss(animated: true, completion: nil)
 
         }
     }
