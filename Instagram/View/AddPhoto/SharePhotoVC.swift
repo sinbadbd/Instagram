@@ -28,6 +28,10 @@ class SharePhotoVC: UIViewController {
         
         setupUIView()
     }
+    
+    static let name = NSNotification.Name("setAutomaticFeedHomeVC")
+    
+    
     @objc func handleShare(){
         
         guard let image = selectedImage else {return}
@@ -82,9 +86,10 @@ class SharePhotoVC: UIViewController {
                 })
                 print("Successfully saved user info to db")
                 self.dismiss(animated: true, completion: nil)
+                
+                NotificationCenter.default.post(name: SharePhotoVC.name, object: nil)
             })
         }
-        
     }
     
     func setupUIView(){

@@ -12,7 +12,8 @@ import SDWebImage
 class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let HOME_CELL = "HOME_CELL"
-    
+    var post = [Posts]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor  = .white
@@ -23,10 +24,16 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         refreshControll.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         collectionView?.refreshControl = refreshControll
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdatefeed), name: SharePhotoVC.name, object: nil)
+        
         fetchAllPosts()
+    }
+    @objc func handleUpdatefeed(){
+        handleRefresh()
     }
     
     @objc func handleRefresh(){
+        post.removeAll()
         fetchAllPosts()
     }
     func fetchAllPosts(){
@@ -49,9 +56,6 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
                 print(err)
         }
     }
-    
-    
-    var post = [Posts]()
     
     func fetchHomeData(){
         guard let userID = Auth.auth().currentUser?.uid else {return}
@@ -91,7 +95,11 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HOME_CELL, for: indexPath) as! HomeViewCell
-        cell.post = post[indexPath.item]
+       
+        if indexPath.item < post.count {
+            cell.post = post[indexPath.item]
+        }
+
         return cell
     }
     
