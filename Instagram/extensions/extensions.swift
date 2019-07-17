@@ -13,6 +13,12 @@ extension UIColor {
         return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
     }
 }
+extension UIImageView {    
+    func roundedImage() {
+        self.layer.cornerRadius = self.frame.size.width / 2
+        self.clipsToBounds = true
+    }
+}
 
 extension Date {
     func timeAgoDisplay() -> String {
