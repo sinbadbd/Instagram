@@ -18,6 +18,18 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         collectionView.backgroundColor  = .white
         // Do any additional setup after loading the view.
         collectionView.register(HomeViewCell.self, forCellWithReuseIdentifier:  HOME_CELL)
+        
+        let refreshControll = UIRefreshControl()
+        refreshControll.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        collectionView?.refreshControl = refreshControll
+        
+        fetchAllPosts()
+    }
+    
+    @objc func handleRefresh(){
+        fetchAllPosts()
+    }
+    func fetchAllPosts(){
         fetchHomeData()
         fetchFollowingUserIDs()
     }
@@ -52,6 +64,9 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     fileprivate func fetchPostsWithUser(user: User) {
         let ref = Database.database().reference().child("posts").child(user.uid)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            self.collectionView.refreshControl?.endRefreshing()
+            
             guard let dictionaries = snapshot.value as? [String: Any] else { return }
             
             dictionaries.forEach({ (key, value) in
