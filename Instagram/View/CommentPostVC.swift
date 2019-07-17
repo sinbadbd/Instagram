@@ -33,7 +33,7 @@ class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: COMMENT_CELL, for: indexPath) as! CommentPostCell
-        cell.backgroundColor = .red
+       // cell.backgroundColor = .red
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

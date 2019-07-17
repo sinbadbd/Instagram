@@ -11,7 +11,7 @@ class UserSearchCell: UICollectionViewCell {
     
     let profileImageView: UIImageView = {
         let iv = UIImageView()
-        iv.backgroundColor = .red
+        iv.backgroundColor = UIColor.lightGray
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         return iv
