@@ -9,7 +9,14 @@
 import UIKit
 import SDWebImage
 
+protocol HomePostCellDelegate {
+    func didTapComment(post: Posts)
+}
+
 class HomeViewCell: UICollectionViewCell {
+    
+    
+    var delegate : HomePostCellDelegate?
     
     var post : Posts? {
         didSet {
@@ -81,10 +88,11 @@ class HomeViewCell: UICollectionViewCell {
      //   button.backgroundColor = .red
         return button
     }()
-    let commentButton : UIButton = {
+    lazy var commentButton : UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "comment").withRenderingMode(.alwaysOriginal), for: .normal)
       //  button.backgroundColor = .red
+        button.addTarget(self, action: #selector(handleComment), for: .touchUpInside)
         return button
     }()
     let sendMessageButton : UIButton = {
@@ -109,6 +117,17 @@ class HomeViewCell: UICollectionViewCell {
         return label
     }()
 
+    
+    
+    @objc func handleComment(){
+        print("hi")
+        guard let post = post else {return}
+        
+        delegate?.didTapComment(post: post)
+    }
+    
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
       //  backgroundColor = .green

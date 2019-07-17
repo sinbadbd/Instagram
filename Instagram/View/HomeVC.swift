@@ -9,7 +9,8 @@
 import UIKit
 import Firebase
 import SDWebImage
-class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+
+class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, HomePostCellDelegate {
     
     let HOME_CELL = "HOME_CELL"
     var post = [Posts]()
@@ -28,6 +29,13 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         
         fetchAllPosts()
     }
+    
+    func didTapComment(post: Posts) {
+        print("\(post)")
+        let commentVC = CommentPostVC(collectionViewLayout: UICollectionViewFlowLayout())
+        navigationController?.pushViewController(commentVC, animated: true)
+    }
+    
     @objc func handleUpdatefeed(){
         handleRefresh()
     }
@@ -100,6 +108,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
             cell.post = post[indexPath.item]
         }
 
+        cell.delegate = self
         return cell
     }
     
