@@ -40,9 +40,6 @@ class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         return CGSize(width: view.frame.width, height: 100)
     }
     
-    
-    
-    
     override var inputAccessoryView: UIView? {
         get {
             let containerView = UIView()
