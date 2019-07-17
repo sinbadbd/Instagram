@@ -52,13 +52,14 @@ class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             
             
             let userProfileCommnetImg = UIImageView()
-            userProfileCommnetImg.backgroundColor = .red
+           // userProfileCommnetImg.backgroundColor = .red
             containerView.addSubview(userProfileCommnetImg)
             userProfileCommnetImg.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: CGSize(width: 40, height: 40))
            // userProfileCommnetImg.roundedImage()
             userProfileCommnetImg.layer.cornerRadius = 40 / 2
             userProfileCommnetImg.clipsToBounds = true
-            
+            userProfileCommnetImg.image = #imageLiteral(resourceName: "user")
+            userProfileCommnetImg.contentMode = .scaleAspectFit
             
             let commentInputField = UITextField()
             commentInputField.placeholder = "Add a comment..."
@@ -71,6 +72,7 @@ class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             postButton.backgroundColor = UIColor(white: 0, alpha: 0)
             postButton.setTitle("Post", for: .normal)
             containerView.addSubview(postButton)
+            postButton.isEnabled = false
             postButton.anchor(top: containerView.topAnchor, leading: commentInputField.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 5, bottom: 0, right: 5), size: CGSize(width: 50, height: 40))
             
             
