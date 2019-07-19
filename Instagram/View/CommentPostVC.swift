@@ -119,12 +119,12 @@ class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         for (emoji, index) in commentsIcon.enumerated() {
           
           //  let emo = commentsIcon[emoji]
-            print(emoji)
+            print(emoji, index)
             var emojiButton = UIButton()
             emojiButton.frame = CGRect(x: xPos, y: 0, width: 50, height: 40)
             emojiButton.setTitle("\(index)", for: .normal)
             emojiButton.setTitleColor(UIColor.black, for: .normal)
-           // emojiButton.tag = "\(Int(index))"
+            emojiButton.tag = emoji
             emojiButton.addTarget(self, action: #selector(handleEmojiButton), for: .touchUpInside)
             commentsEmojiView.addSubview(emojiButton)
             xPos += 50
@@ -163,7 +163,7 @@ class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     @objc func handleEmojiButton(sender : UIButton){
         print(sender.tag)
         
-        self.commentInputField.text = "\(sender.tag)"
+        self.commentInputField.text = commentsIcon[sender.tag]
         
     }
     
