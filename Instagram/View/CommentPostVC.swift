@@ -17,6 +17,7 @@ class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     var comments = [Comments]()
     var user: User?
     
+    
     let userProfileCommnetImg = UIImageView()
     let postButton = UIButton(type: .system)
     
@@ -118,7 +119,7 @@ class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         userProfileCommnetImg.layer.cornerRadius = 40 / 2
         userProfileCommnetImg.clipsToBounds = true
         userProfileCommnetImg.image = #imageLiteral(resourceName: "user")
-        userProfileCommnetImg.contentMode = .scaleAspectFit
+        userProfileCommnetImg.contentMode = .scaleAspectFill
         
      
         // commentInputField.backgroundColor = .red

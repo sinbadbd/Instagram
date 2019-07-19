@@ -25,10 +25,8 @@ class CommentPostCell: UICollectionViewCell{
     let userCommentImg  : UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.layer.cornerRadius = 40 / 2
-        image.clipsToBounds = true
         image.image = #imageLiteral(resourceName: "user")
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .scaleAspectFill
         return image
     }()
     let captionLabel: UILabel = {
@@ -68,8 +66,12 @@ class CommentPostCell: UICollectionViewCell{
         super.init(frame: frame)
         addSubview(userCommentImg)
         userCommentImg.image = #imageLiteral(resourceName: "user")
-        userCommentImg.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 10, bottom: 0, right: 0), size: CGSize(width: 40, height: 40))
+        userCommentImg.anchor(top: nil, leading: leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 10, bottom: 0, right: 0), size: CGSize(width: 40, height: 40))
+        userCommentImg.layer.cornerRadius = 40 / 2
+        userCommentImg.clipsToBounds = true
+        userCommentImg.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         userCommentImg.centerYInSuperview()
+        
         
         addSubview(captionLabel)
         captionLabel.anchor(top: topAnchor, leading: userCommentImg.trailingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 10), size: CGSize(width: captionLabel.frame.width, height: captionLabel.frame.height))
