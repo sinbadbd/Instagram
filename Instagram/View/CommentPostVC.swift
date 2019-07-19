@@ -89,7 +89,17 @@ class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 100)
+        
+        // dynamic height for comments
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let dummyCell = CommentPostCell(frame: frame)
+        dummyCell.comments = comments[indexPath.item]
+        dummyCell.layoutIfNeeded()
+        
+        let targetSize = CGSize(width: view.frame.width, height: 1000)
+        let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
+        let heightY = max(40 + 8 + 8, estimatedSize.height)
+        return CGSize(width: view.frame.width, height: heightY)
     }
     
     
@@ -107,13 +117,20 @@ class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         topBorder.layer.borderWidth = 1
         
         let containerView = UIView()
-        //containerView.backgroundColor = .green
+        containerView.backgroundColor = .white
         containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         
         let commentsEmojiView = UIView()
         containerView.addSubview(commentsEmojiView)
         commentsEmojiView.anchor(top: nil, leading: containerView.leadingAnchor, bottom: nil, trailing: containerView.trailingAnchor, padding: .init(), size: CGSize(width: 100, height: 40))
         commentsEmojiView.backgroundColor = .white
+//
+//        let emomojiTopBorder = UIView()
+//        emomojiTopBorder.layer.borderColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+//        emomojiTopBorder.layer.borderWidth = 1
+        
+//        commentsEmojiView.addSubview(emomojiTopBorder)
+//        emomojiTopBorder.anchor(top: commentsEmojiView.topAnchor, leading: commentsEmojiView.leadingAnchor, bottom: nil, trailing: commentsEmojiView.trailingAnchor, padding: .init(), size: CGSize(width: 0, height: 0.5))
         
         var xPos = 2
         for (emoji, index) in commentsIcon.enumerated() {
@@ -149,7 +166,6 @@ class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // commentInputField.backgroundColor = .red
         containerView.addSubview(self.commentInputField)
         self.commentInputField.anchor(top: topBorder.bottomAnchor, leading: userProfileCommnetImg.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 5, bottom: 0, right: 0), size: CGSize(width: 290, height: 40))
-        
         
         postButton.backgroundColor = UIColor(white: 0, alpha: 0)
         postButton.setTitle("Post", for: .normal)
