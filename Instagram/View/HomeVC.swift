@@ -33,6 +33,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Ho
     func didTapComment(post: Posts) {
         print("\(post)")
         let commentVC = CommentPostVC(collectionViewLayout: UICollectionViewFlowLayout())
+        commentVC.post = post
         navigationController?.pushViewController(commentVC, animated: true)
     }
     
@@ -84,8 +85,8 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Ho
             dictionaries.forEach({ (key, value) in
                 guard let dictionary = value as? [String: Any] else { return }
                 
-                let post = Posts(user: user, dict: dictionary)
-                
+                var post = Posts(user: user, dict: dictionary)
+                post.postId = key
                 self.post.append(post)
             })
             self.post.sort(by: { (p1, p2) -> Bool in
