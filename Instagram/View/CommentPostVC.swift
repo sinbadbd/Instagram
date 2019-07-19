@@ -8,16 +8,64 @@
 
 import UIKit
 import Firebase
+import SDWebImage
+
 class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     let COMMENT_CELL = "CELL"
     
     var post: Posts?
+    var comments = [Comments]()
+    var user: User?
+    
+    let userProfileCommnetImg = UIImageView()
+    let postButton = UIButton(type: .system)
+    
+    let commentInputField : UITextField = {
+        let InputField = UITextField()
+        InputField.placeholder = "Add a comment..."
+        return InputField
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .white
         collectionView.register(CommentPostCell.self, forCellWithReuseIdentifier: COMMENT_CELL)
         setComment()
+        fetchComments()
+    }
+    
+    
+    func fetchComments(){
+        guard let posId = self.post?.postId else { return }
+        let ref = Database.database().reference().child("comments").child(posId)
+        
+        ref.observe(.childAdded, with: { (snap) in
+            
+            
+            guard let dictionary = snap.value as? [String : Any] else { return }
+            
+            guard let uid = dictionary["uid"] as? String else { return }
+            
+            Database.fetchUserWithUID(uid: uid, completion: { (user) in
+                var comment = Comments(dic: dictionary)
+                print(comment)
+                comment.user = user
+                self.comments.append(comment)
+                self.collectionView.reloadData()
+            })
+            
+      
+        }) { (err) in
+            print(err)
+        }
+        
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        Database.fetchUserWithUID(uid: uid) { (user) in
+            let url = URL(string: user.profileImage)
+            self.userProfileCommnetImg.sd_setImage(with: url, completed: nil)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,37 +79,38 @@ class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return comments.count
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: COMMENT_CELL, for: indexPath) as! CommentPostCell
-       // cell.backgroundColor = .red
+       cell.comments = comments[indexPath.item]
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 100)
     }
     
-    
-    let commentInputField : UITextField = {
-        let InputField = UITextField()
-        InputField.placeholder = "Add a comment..."
-        return InputField
-    }()
+ 
     func setComment(){
         if commentInputField.text != nil {
              postButton.isEnabled = true
         }
     }
-    let postButton = UIButton(type: .system)
 
     lazy var containerView : UIView = {
+        
+        let topBorder = UIView()
+        topBorder.layer.borderColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        topBorder.layer.borderWidth = 1
         
         let containerView = UIView()
         containerView.backgroundColor = .white
         containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 60)
         
-        let userProfileCommnetImg = UIImageView()
+        
+        containerView.addSubview(topBorder)
+        topBorder.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: containerView.trailingAnchor, padding: .init(), size: CGSize(width: 0, height: 0.5))
+        
         // userProfileCommnetImg.backgroundColor = .red
         containerView.addSubview(userProfileCommnetImg)
         userProfileCommnetImg.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: CGSize(width: 40, height: 40))
@@ -100,6 +149,7 @@ class CommentPostVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             if err != nil {
                 return
             }
+            self.commentInputField.text = ""
             print("successfully insert comments")
         }
     }
