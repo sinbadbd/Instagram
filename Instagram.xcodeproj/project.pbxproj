@@ -15,6 +15,9 @@
 		A124D96D22D9BDAB0000E3D9 /* Posts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A124D96C22D9BDAB0000E3D9 /* Posts.swift */; };
 		A124D96F22D9C27C0000E3D9 /* UserPostImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A124D96E22D9C27C0000E3D9 /* UserPostImageCell.swift */; };
 		A124D97322DA06A10000E3D9 /* HomeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A124D97222DA06A10000E3D9 /* HomeViewCell.swift */; };
+		A157696D22E36A7800619862 /* ChatMessagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A157696C22E36A7800619862 /* ChatMessagesVC.swift */; };
+		A157696F22E3705800619862 /* ChatMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A157696E22E3705800619862 /* ChatMessages.swift */; };
+		A157697122E370C600619862 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A157697022E370C600619862 /* ChatMessageCell.swift */; };
 		A1730B0C22D79F7600B89362 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1730B0B22D79F7600B89362 /* HomeVC.swift */; };
 		A1AF2F2F22CFD50A00A29D35 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AF2F2E22CFD50A00A29D35 /* AppDelegate.swift */; };
 		A1AF2F3122CFD50A00A29D35 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AF2F3022CFD50A00A29D35 /* ViewController.swift */; };
@@ -50,6 +53,9 @@
 		A124D96C22D9BDAB0000E3D9 /* Posts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Posts.swift; sourceTree = "<group>"; };
 		A124D96E22D9C27C0000E3D9 /* UserPostImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostImageCell.swift; sourceTree = "<group>"; };
 		A124D97222DA06A10000E3D9 /* HomeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewCell.swift; sourceTree = "<group>"; };
+		A157696C22E36A7800619862 /* ChatMessagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessagesVC.swift; sourceTree = "<group>"; };
+		A157696E22E3705800619862 /* ChatMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessages.swift; sourceTree = "<group>"; };
+		A157697022E370C600619862 /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		A1730B0B22D79F7600B89362 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		A1AF2F2B22CFD50A00A29D35 /* Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1AF2F2E22CFD50A00A29D35 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +137,7 @@
 			children = (
 				A124D97222DA06A10000E3D9 /* HomeViewCell.swift */,
 				E6D6215122DF588E00CABBCE /* CommentPostCell.swift */,
+				A157697022E370C600619862 /* ChatMessageCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -216,6 +223,7 @@
 				A1730B0B22D79F7600B89362 /* HomeVC.swift */,
 				E6EAFD3922DB5D3700D46C9A /* UserSearchVC.swift */,
 				E6D6214F22DF528E00CABBCE /* CommentPostVC.swift */,
+				A157696C22E36A7800619862 /* ChatMessagesVC.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -245,6 +253,7 @@
 				E639CD1E22D5DE2300D87EE7 /* User.swift */,
 				A124D96C22D9BDAB0000E3D9 /* Posts.swift */,
 				A1C9927122E19300002BB12A /* Comments.swift */,
+				A157696E22E3705800619862 /* ChatMessages.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -393,9 +402,11 @@
 				A124D96D22D9BDAB0000E3D9 /* Posts.swift in Sources */,
 				E6D1DF4F22D735F200DBCEE6 /* LoginVC.swift in Sources */,
 				A1AF2F3122CFD50A00A29D35 /* ViewController.swift in Sources */,
+				A157697122E370C600619862 /* ChatMessageCell.swift in Sources */,
 				A1AF2F4922CFD5F700A29D35 /* SignupVC.swift in Sources */,
 				A1C9927222E19300002BB12A /* Comments.swift in Sources */,
 				A124D96B22D8FFF50000E3D9 /* SharePhotoVC.swift in Sources */,
+				A157696F22E3705800619862 /* ChatMessages.swift in Sources */,
 				A124D96922D8ED080000E3D9 /* PhotoSelectorHeader.swift in Sources */,
 				A124D97322DA06A10000E3D9 /* HomeViewCell.swift in Sources */,
 				A124D96722D8DB280000E3D9 /* PhotoSelectorCell.swift in Sources */,
@@ -405,6 +416,7 @@
 				A1AF2F2F22CFD50A00A29D35 /* AppDelegate.swift in Sources */,
 				E639CD1122D5B5A100D87EE7 /* MainTabBarController.swift in Sources */,
 				A124D96522D8C2BC0000E3D9 /* PhotoSelectorVC.swift in Sources */,
+				A157696D22E36A7800619862 /* ChatMessagesVC.swift in Sources */,
 				A1AF2F4522CFD5E900A29D35 /* UIView  + Constrains.swift in Sources */,
 				A1AF2F4622CFD5E900A29D35 /* extensions.swift in Sources */,
 				E639CD1B22D5D9FA00D87EE7 /* UserProfileHeaderCell.swift in Sources */,

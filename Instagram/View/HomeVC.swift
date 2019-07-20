@@ -29,7 +29,14 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Ho
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdatefeed), name: SharePhotoVC.name, object: nil)
         
-        fetchAllPosts()
+        fetchAllPosts() 
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "comment"), style: .plain, target: self, action: #selector(handleChatMessage))
+    }
+    @objc func handleChatMessage(){
+        print("hi")
+        let chatMessage = ChatMessagesVC()
+        navigationController?.pushViewController(chatMessage, animated: true)
     }
     
     func didTapComment(post: Posts) {
