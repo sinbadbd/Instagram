@@ -11,6 +11,7 @@ import SDWebImage
 
 protocol HomePostCellDelegate {
     func didTapComment(post: Posts)
+    func didLike(for cell: HomeViewCell)
 }
 
 class HomeViewCell: UICollectionViewCell {
@@ -27,6 +28,12 @@ class HomeViewCell: UICollectionViewCell {
             self.userNameLabel.text = post?.user?.username
             let prifileUrl = URL(string: (post?.imageUrl)!)
             self.userProfileImg.sd_setImage(with: prifileUrl, completed: nil)
+            
+            let likeActive = (post?.hasLike == true)
+            
+            likeButton.setImage( likeActive ? #imageLiteral(resourceName: "like_selected").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "like_unselected").withRenderingMode(.alwaysOriginal), for: .normal)
+            //likeButton.tintColor = .red
+           
             
             
             setupAttributedCaption()
@@ -62,7 +69,7 @@ class HomeViewCell: UICollectionViewCell {
     let userProfileImg: UIImageView = {
         let imageV  = UIImageView()
         imageV.translatesAutoresizingMaskIntoConstraints = false
-        imageV.contentMode = .scaleAspectFit
+        imageV.contentMode = .scaleAspectFill
         imageV.layer.cornerRadius = 40 / 2
         imageV.clipsToBounds = true
         return imageV
@@ -82,10 +89,11 @@ class HomeViewCell: UICollectionViewCell {
         return button
     }()
     
-    let likeButton : UIButton = {
+    lazy var likeButton : UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "like_unselected").withRenderingMode(.alwaysOriginal), for: .normal)
-     //   button.backgroundColor = .red
+        //button.backgroundColor = .red
+        button.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         return button
     }()
     lazy var commentButton : UIButton = {
@@ -117,7 +125,10 @@ class HomeViewCell: UICollectionViewCell {
         return label
     }()
 
-    
+    @objc func handleLike (){
+        print("1234..")
+        delegate?.didLike(for: self)
+    }
     
     @objc func handleComment(){
         print("hi")
@@ -163,10 +174,10 @@ class HomeViewCell: UICollectionViewCell {
         
         stackview.translatesAutoresizingMaskIntoConstraints = false
         stackview.distribution = .fillEqually
-        stackview.axis = .horizontal
+       // stackview.axis = .horizontal
       //  stackview.spacing = 10
         addSubview(stackview)
-        
+        stackview.backgroundColor = .red
         stackview.anchor(top: homeImg.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: nil , padding: .init(top: 5, left: 10, bottom: 0, right: 0), size: CGSize(width: 130, height: 40))
         
         addSubview(bookmarksButton)

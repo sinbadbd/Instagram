@@ -11,6 +11,8 @@ import Firebase
 import SDWebImage
 
 class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, HomePostCellDelegate {
+  
+    
     
     let HOME_CELL = "HOME_CELL"
     var post = [Posts]()
@@ -35,6 +37,30 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Ho
         let commentVC = CommentPostVC(collectionViewLayout: UICollectionViewFlowLayout())
         commentVC.post = post
         navigationController?.pushViewController(commentVC, animated: true)
+    }
+    
+    
+    func didLike(for cell: HomeViewCell) {
+        
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        var post = self.post[indexPath.item]
+        
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        guard let postId = post.postId else { return }
+        
+        let values = [uid: post.hasLike == true ? 0 : 1]
+        Database.database().reference().child("likes").child(postId).updateChildValues(values) { (err, ref) in
+            if err != nil{
+                return
+            }
+            print("Successfully liked post.")
+            
+            post.hasLike = !post.hasLike
+            self.post[indexPath.item] = post
+            self.collectionView?.reloadItems(at: [indexPath])
+        }
     }
     
     @objc func handleUpdatefeed(){
@@ -87,12 +113,27 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Ho
                 
                 var post = Posts(user: user, dict: dictionary)
                 post.postId = key
-                self.post.append(post)
+                
+                guard let uid = Auth.auth().currentUser?.uid else { return }
+                Database.database().reference().child("likes").child(key).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                    print(snapshot)
+                    
+                    if let value = snapshot.value as? Int, value == 1 {
+                        post.hasLike = true
+                    } else {
+                        post.hasLike = false
+                    }
+                    self.post.append(post)
+                    self.post.sort(by: { (p1, p2) -> Bool in
+                        return p1.createDate.compare(p2.createDate) == .orderedDescending
+                    })
+                    self.collectionView?.reloadData()
+                    
+                }, withCancel: { (err) in
+                    print("Failed to fetch like info for post:", err)
+                })
+               
             })
-            self.post.sort(by: { (p1, p2) -> Bool in
-                return p1.createDate.compare(p2.createDate) == .orderedDescending
-            })
-            self.collectionView?.reloadData()
             
         }) { (err) in
             print("Failed to fetch posts:", err)
