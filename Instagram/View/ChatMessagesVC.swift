@@ -11,7 +11,16 @@ import UIKit
 class ChatMessagesVC: UITableViewController {
     
     let CELL = "CELL"
+    //var commentsIcon = ["😀", "😍", "😛", "🙌","❤️","🔥","🙊","🍎"]
     
+    let userProfileCommnetImg = UIImageView()
+    let postButton = UIButton(type: .system)
+    
+    let commentInputField : UITextField = {
+        let InputField = UITextField()
+        InputField.placeholder = "Add a comment..."
+        return InputField
+    }()
     
     let textMessage = [
         ChatMessages(message: "Structs", isIncoming: true),
@@ -47,7 +56,7 @@ class ChatMessagesVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CELL, for: indexPath) as! ChatMessageCell
-        var data = textMessage[indexPath.row]
+        let data = textMessage[indexPath.row]
         cell.selectionStyle = .none
         cell.chatMessage = data
         return cell
@@ -83,5 +92,100 @@ class ChatMessagesVC: UITableViewController {
         UIView.animate(withDuration: 1.0) {
             cell.layer.transform =  CATransform3DIdentity
         }
+    }
+    
+    
+    lazy var containerView : UIView = {
+        
+        let topBorder = UIView()
+        topBorder.layer.borderColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        topBorder.layer.borderWidth = 1
+        
+        let containerView = UIView()
+        containerView.backgroundColor = .white
+        containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        
+        let commentsEmojiView = UIView()
+        containerView.addSubview(commentsEmojiView)
+        commentsEmojiView.anchor(top: nil, leading: containerView.leadingAnchor, bottom: nil, trailing: containerView.trailingAnchor, padding: .init(), size: CGSize(width: 100, height: 40))
+        commentsEmojiView.backgroundColor = .white
+ 
+        
+        //commentsIcon
+        containerView.addSubview(topBorder)
+        topBorder.anchor(top: commentsEmojiView.bottomAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: containerView.trailingAnchor, padding: .init(), size: CGSize(width: 0, height: 0.5))
+        
+        // userProfileCommnetImg.backgroundColor = .red
+        containerView.addSubview(userProfileCommnetImg)
+        userProfileCommnetImg.anchor(top: topBorder.bottomAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: CGSize(width: 40, height: 40))
+        // userProfileCommnetImg.roundedImage()
+        userProfileCommnetImg.layer.cornerRadius = 40 / 2
+        userProfileCommnetImg.clipsToBounds = true
+        userProfileCommnetImg.image = #imageLiteral(resourceName: "user")
+        userProfileCommnetImg.contentMode = .scaleAspectFill
+        
+        
+        // commentInputField.backgroundColor = .red
+        containerView.addSubview(self.commentInputField)
+        self.commentInputField.anchor(top: topBorder.bottomAnchor, leading: userProfileCommnetImg.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 5, bottom: 0, right: 0), size: CGSize(width: 290, height: 40))
+        
+        commentInputField.layer.borderWidth = 0.5
+        commentInputField.layer.borderColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        
+        
+        postButton.backgroundColor = UIColor(white: 0, alpha: 0)
+        postButton.setTitle("Post", for: .normal)
+        containerView.addSubview(postButton)
+        // postButton.isEnabled = false
+        postButton.addTarget(self, action: #selector(handelComment), for: .touchUpInside)
+        postButton.anchor(top:topBorder.bottomAnchor, leading: self.commentInputField.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 5, bottom: 0, right: 5), size: CGSize(width: 50, height: 40))
+        return containerView
+    }()
+    
+    @objc func handleEmojiButton(sender : UIButton){
+        print(sender.tag)
+        
+    //    self.commentInputField.text = commentsIcon[sender.tag]
+        
+    }
+    
+    
+    @objc func handelComment(){
+        
+        
+        
+        
+        
+        
+        
+        
+//        print("\(commentInputField.text ?? "")")
+//        guard let uid = Auth.auth().currentUser?.uid else {return}
+//
+//        let postId = post?.postId ?? ""
+//        let values = [
+//            "text" : commentInputField.text ?? "",
+//            "creationDate" : Date().timeIntervalSince1970,
+//            "uid" : uid
+//            ] as [String: Any]
+//
+//        Database.database().reference().child("comments").child(postId).childByAutoId().updateChildValues(values) { (err, ref) in
+//            if err != nil {
+//                return
+//            }
+//            self.commentInputField.text = ""
+//            print("successfully insert comments")
+//        }
+    }
+    
+    
+    override var inputAccessoryView: UIView? {
+        get {
+            return containerView
+        }
+    }
+    
+    override var canBecomeFirstResponder: Bool{
+        return true
     }
 }
