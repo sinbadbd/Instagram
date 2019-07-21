@@ -29,6 +29,7 @@ class UserProfileHeaderCell: UICollectionViewCell {
         guard let userId = user?.uid else { return }
         if currentLoggedInUserId == userId {
             // Edit profile
+             self.editProfileButton.setTitle("Follow", for: .normal)
         } else {
             // check if following
             
