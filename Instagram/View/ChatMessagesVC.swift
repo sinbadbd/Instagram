@@ -40,6 +40,8 @@ class ChatMessagesVC: UITableViewController {
         tableView.register(ChatMessageCell.self, forCellReuseIdentifier: CELL)
         tableView.separatorStyle = .none
         tableView.backgroundColor = UIColor(red: 240, green: 240, blue: 240, alpha: 1)
+        
+        fetchMessage()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -49,6 +51,12 @@ class ChatMessagesVC: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         tabBarController?.tabBar.isHidden = false
+    }
+    
+    
+    
+    func fetchMessage(){
+        print("message....")
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -128,7 +136,7 @@ class ChatMessagesVC: UITableViewController {
         
         // commentInputField.backgroundColor = .red
         containerView.addSubview(self.commentInputField)
-        self.commentInputField.anchor(top: topBorder.bottomAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: containerView.trailingAnchor, padding: .init(top: 10, left: 40, bottom: 0, right: 40), size: CGSize(width: 340, height: 40))
+        self.commentInputField.anchor(top: topBorder.bottomAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: CGSize(width: 340, height: 40))
         // commentInputField.backgroundColor = .red
         commentInputField.layer.borderWidth = 0.5
         commentInputField.layer.cornerRadius = 12
@@ -143,7 +151,7 @@ class ChatMessagesVC: UITableViewController {
         containerView.addSubview(postButton)
         // postButton.isEnabled = false
         postButton.addTarget(self, action: #selector(handleSendMessage), for: .touchUpInside)
-        postButton.anchor(top:containerView.topAnchor, leading: nil, bottom: nil, trailing: containerView.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 5, right: 5), size: CGSize(width: 50, height: 40))
+        postButton.anchor(top:topBorder.bottomAnchor, leading: nil, bottom: nil, trailing: containerView.trailingAnchor, padding: .init(top: 10, left: 0, bottom: 5, right: 5), size: CGSize(width: 50, height: 40))
         return containerView
     }()
     
@@ -163,12 +171,12 @@ class ChatMessagesVC: UITableViewController {
         let value = [
             "message" : commentInputField.text ?? "",
             "creationDate" : Date().timeIntervalSince1970,
-            "uid" : uid, 
-            "isIncoming" : true
+            "uid" : uid,
+            "isIncoming": false
             ] as [String : Any]
         
         
-        Database.database().reference().child("message").child(uid).updateChildValues(value){ (err, ref) in
+        Database.database().reference().child("message").child(uid).childByAutoId().updateChildValues(value){ (err, ref) in
             if err != nil {
                 return
             }
