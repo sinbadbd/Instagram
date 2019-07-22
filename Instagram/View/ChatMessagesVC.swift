@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ChatMessagesVC: UITableViewController {
     
@@ -18,7 +19,7 @@ class ChatMessagesVC: UITableViewController {
     
     let commentInputField : UITextField = {
         let InputField = UITextField()
-        InputField.placeholder = "Add a comment..."
+        InputField.placeholder = "Send message..."
         return InputField
     }()
     
@@ -109,75 +110,74 @@ class ChatMessagesVC: UITableViewController {
         containerView.addSubview(commentsEmojiView)
         commentsEmojiView.anchor(top: nil, leading: containerView.leadingAnchor, bottom: nil, trailing: containerView.trailingAnchor, padding: .init(), size: CGSize(width: 100, height: 40))
         commentsEmojiView.backgroundColor = .white
- 
+        
         
         //commentsIcon
         containerView.addSubview(topBorder)
         topBorder.anchor(top: commentsEmojiView.bottomAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: containerView.trailingAnchor, padding: .init(), size: CGSize(width: 0, height: 0.5))
         
         // userProfileCommnetImg.backgroundColor = .red
-        containerView.addSubview(userProfileCommnetImg)
-        userProfileCommnetImg.anchor(top: topBorder.bottomAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: CGSize(width: 40, height: 40))
-        // userProfileCommnetImg.roundedImage()
-        userProfileCommnetImg.layer.cornerRadius = 40 / 2
-        userProfileCommnetImg.clipsToBounds = true
-        userProfileCommnetImg.image = #imageLiteral(resourceName: "user")
-        userProfileCommnetImg.contentMode = .scaleAspectFill
+        //        containerView.addSubview(userProfileCommnetImg)
+        //        userProfileCommnetImg.anchor(top: topBorder.bottomAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: CGSize(width: 40, height: 40))
+        //        // userProfileCommnetImg.roundedImage()
+        //        userProfileCommnetImg.layer.cornerRadius = 40 / 2
+        //        userProfileCommnetImg.clipsToBounds = true
+        //        userProfileCommnetImg.image = #imageLiteral(resourceName: "user")
+        //        userProfileCommnetImg.contentMode = .scaleAspectFill
         
         
         // commentInputField.backgroundColor = .red
         containerView.addSubview(self.commentInputField)
-        self.commentInputField.anchor(top: topBorder.bottomAnchor, leading: userProfileCommnetImg.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 5, bottom: 0, right: 0), size: CGSize(width: 290, height: 40))
-        
+        self.commentInputField.anchor(top: topBorder.bottomAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: containerView.trailingAnchor, padding: .init(top: 10, left: 40, bottom: 0, right: 40), size: CGSize(width: 340, height: 40))
+        // commentInputField.backgroundColor = .red
         commentInputField.layer.borderWidth = 0.5
+        commentInputField.layer.cornerRadius = 12
         commentInputField.layer.borderColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: commentInputField.frame.height))
+        commentInputField.leftView = paddingView
+        commentInputField.leftViewMode = UITextField.ViewMode.always
         
         
         postButton.backgroundColor = UIColor(white: 0, alpha: 0)
-        postButton.setTitle("Post", for: .normal)
+        postButton.setTitle("Send", for: .normal)
         containerView.addSubview(postButton)
         // postButton.isEnabled = false
-        postButton.addTarget(self, action: #selector(handelComment), for: .touchUpInside)
-        postButton.anchor(top:topBorder.bottomAnchor, leading: self.commentInputField.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 5, bottom: 0, right: 5), size: CGSize(width: 50, height: 40))
+        postButton.addTarget(self, action: #selector(handleSendMessage), for: .touchUpInside)
+        postButton.anchor(top:containerView.topAnchor, leading: nil, bottom: nil, trailing: containerView.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 5, right: 5), size: CGSize(width: 50, height: 40))
         return containerView
     }()
     
     @objc func handleEmojiButton(sender : UIButton){
-        print(sender.tag)
+        //  print(sender.tag)
+        print("hi")
         
-    //    self.commentInputField.text = commentsIcon[sender.tag]
+        //    self.commentInputField.text = commentsIcon[sender.tag]
         
     }
     
     
-    @objc func handelComment(){
+    @objc func handleSendMessage(){
+        print("hi")
+        
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let value = [
+            "message" : commentInputField.text ?? "",
+            "creationDate" : Date().timeIntervalSince1970,
+            "uid" : uid, 
+            "isIncoming" : true
+            ] as [String : Any]
         
         
-        
-        
-        
-        
-        
-        
-//        print("\(commentInputField.text ?? "")")
-//        guard let uid = Auth.auth().currentUser?.uid else {return}
-//
-//        let postId = post?.postId ?? ""
-//        let values = [
-//            "text" : commentInputField.text ?? "",
-//            "creationDate" : Date().timeIntervalSince1970,
-//            "uid" : uid
-//            ] as [String: Any]
-//
-//        Database.database().reference().child("comments").child(postId).childByAutoId().updateChildValues(values) { (err, ref) in
-//            if err != nil {
-//                return
-//            }
-//            self.commentInputField.text = ""
-//            print("successfully insert comments")
-//        }
+        Database.database().reference().child("message").child(uid).updateChildValues(value){ (err, ref) in
+            if err != nil {
+                return
+            }
+            self.commentInputField.text = ""
+            print("successfully insert send message")
+            
+            
+        }
     }
-    
     
     override var inputAccessoryView: UIView? {
         get {
