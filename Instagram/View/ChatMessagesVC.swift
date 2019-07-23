@@ -23,16 +23,18 @@ class ChatMessagesVC: UITableViewController {
         return InputField
     }()
     
-    let textMessage = [
-        ChatMessages(message: "Structs", isIncoming: true),
-        ChatMessages(message: "Structs are complex", isIncoming: false),
-        ChatMessages(message: "Structs are complex data types, meaning that they are made up of multiple values", isIncoming: true),
-        ChatMessages(message: "Structs are complex data types", isIncoming: false),
-        ChatMessages(message: "meaning that they are made up of multiple values", isIncoming: true),
-        ChatMessages(message: "complex data types", isIncoming: false),
-        ChatMessages(message: "meaning that they are made ....", isIncoming: true)
-    ]
+    var chatMessage = [ChatMessages]()
     
+//    let textMessage = [
+//        ChatMessages(message: "Structs", isIncoming: true),
+//        ChatMessages(message: "Structs are complex", isIncoming: false),
+//        ChatMessages(message: "Structs are complex data types, meaning that they are made up of multiple values", isIncoming: true),
+//        ChatMessages(message: "Structs are complex data types", isIncoming: false),
+//        ChatMessages(message: "meaning that they are made up of multiple values", isIncoming: true),
+//        ChatMessages(message: "complex data types", isIncoming: false),
+//        ChatMessages(message: "meaning that they are made ....", isIncoming: true)
+//    ]
+//
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Message"
@@ -57,15 +59,30 @@ class ChatMessagesVC: UITableViewController {
     
     func fetchMessage(){
         print("message....")
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+       let ref = Database.database().reference().child("message").child(uid)
+        ref.observe(.childAdded, with: { (snap) in
+            print(snap)
+            
+            guard let dictionary = snap.value as? [String : Any] else { return }
+
+            let chat = ChatMessages(dict: dictionary)
+            print(chat)
+            self.chatMessage.append(chat)
+            self.tableView.reloadData()
+        }) { (err) in
+            print(err)
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return textMessage.count
+        print(chatMessage.count)
+        return chatMessage.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CELL, for: indexPath) as! ChatMessageCell
-        let data = textMessage[indexPath.row]
+        let data = chatMessage[indexPath.row]
         cell.selectionStyle = .none
         cell.chatMessage = data
         return cell
@@ -94,14 +111,14 @@ class ChatMessagesVC: UITableViewController {
         return UISwipeActionsConfiguration(actions: [delete, rejected])
     }
     
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-        let rotationTransForm = CATransform3DTranslate(CATransform3DIdentity, -500, 10, 0)
-        cell.layer.transform = rotationTransForm
-        UIView.animate(withDuration: 1.0) {
-            cell.layer.transform =  CATransform3DIdentity
-        }
-    }
+//    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        
+//        let rotationTransForm = CATransform3DTranslate(CATransform3DIdentity, -500, 10, 0)
+//        cell.layer.transform = rotationTransForm
+//        UIView.animate(withDuration: 1.0) {
+//            cell.layer.transform =  CATransform3DIdentity
+//        }
+//    }
     
     
     lazy var containerView : UIView = {
