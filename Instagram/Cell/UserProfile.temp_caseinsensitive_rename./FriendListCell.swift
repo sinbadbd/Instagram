@@ -7,8 +7,19 @@
 //
 
 import UIKit
+import SDWebImage
 
 class FriendListCell: UICollectionViewCell {
+    
+    
+    var user : User? {
+        didSet {
+            let url = URL(string: (user?.profileImage)!)
+            self.profileImageView.sd_setImage(with: url, completed: nil)
+            
+            self.usernameLabel.text = user?.username ?? "username"
+        }
+    }
     
     let profileImageView: UIImageView = {
         let iv = UIImageView()
