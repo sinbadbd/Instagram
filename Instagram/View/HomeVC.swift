@@ -35,8 +35,12 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Ho
     }
     @objc func handleChatMessage(){
         print("hi")
-        let chatMessage = ChatMessagesVC()
-        navigationController?.pushViewController(chatMessage, animated: true)
+      //  let chatMessage = ChatMessagesVC()
+        //navigationController?.pushViewController(chatMessage, animated: true)
+        
+        let friendVC = FriendListVC(collectionViewLayout: UICollectionViewFlowLayout())
+        navigationController?.pushViewController(friendVC, animated: true)
+
     }
     
     func didTapComment(post: Posts) {
