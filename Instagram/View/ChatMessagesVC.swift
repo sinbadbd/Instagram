@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-
+import SDWebImage
 class ChatMessagesVC: UITableViewController {
     
     let CELL = "CELL"
@@ -22,6 +22,13 @@ class ChatMessagesVC: UITableViewController {
         InputField.placeholder = "Send message..."
         return InputField
     }()
+    
+    
+    var user : User? {
+        didSet {
+            
+        }
+    }
     
     var chatMessage = [ChatMessages]()
     
@@ -37,13 +44,35 @@ class ChatMessagesVC: UITableViewController {
 //
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Message"
-        navigationController?.navigationBar.prefersLargeTitles = true
+ 
         tableView.register(ChatMessageCell.self, forCellReuseIdentifier: CELL)
         tableView.separatorStyle = .none
         tableView.backgroundColor = UIColor(red: 240, green: 240, blue: 240, alpha: 1)
-        
+        setUpNavigationBar()
         fetchMessage()
+    }
+    
+    func setUpNavigationBar(){
+        let imageView = UIImageView()
+        imageView.anchor(top: nil, leading: nil, bottom: nil, trailing: nil, padding: .init(), size: CGSize(width: 40, height: 40))
+        imageView.centerYInSuperview()
+        imageView.backgroundColor = .red
+        imageView.contentMode = .scaleToFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 40 / 2
+        let url = URL(string: (user?.profileImage)!)
+        //  let image = UIImage(named: "\(url)")
+        imageView.sd_setImage(with: url, completed: nil)
+        navigationItem.titleView = imageView
+        
+        
+        //        let navUserTitle = UITextView()
+        //        navUserTitle.anchor(top: nil, leading:imageView.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 10, bottom: 0, right: 0))
+        //
+        //        navUserTitle.text = user?.username
+        
+        navigationItem.title = user?.username
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
