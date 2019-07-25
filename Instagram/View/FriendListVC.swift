@@ -17,6 +17,13 @@ class FriendListVC: UICollectionViewController, UICollectionViewDelegateFlowLayo
     
     var user = [User]()
     
+    
+    
+    func showMessageVC(user: User){
+        let chatMessage = ChatMessagesVC()
+        navigationController?.pushViewController(chatMessage, animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .white
@@ -30,8 +37,8 @@ class FriendListVC: UICollectionViewController, UICollectionViewDelegateFlowLayo
     func fetchFollowingFiend(){
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        let ref = Database.database().reference().child("following")
-        ref.observeSingleEvent(of: .value, with: { (snap) in
+        let ref = Database.database().reference().child("users")
+        ref.observe(.value, with: { (snap) in
             //print(snap)
             guard let dictionary = snap.value as? [String : Any] else { return }
            
@@ -76,10 +83,14 @@ class FriendListVC: UICollectionViewController, UICollectionViewDelegateFlowLayo
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 60)
     }
-    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let chatMessage = ChatMessagesVC()
-        navigationController?.pushViewController(chatMessage, animated: true)
+        let user = self.user[indexPath.item]
+        let tex = user.username
+       print(user, tex)
+        let chatMsg = ChatMessagesVC()
+        chatMsg.user = user
+        navigationController?.pushViewController(chatMsg, animated: true)
+        //self.chatMsg?.showMessageVC(user: user)
     }
 
 }
