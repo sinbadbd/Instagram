@@ -23,10 +23,11 @@ class LoginVC: UIViewController {
         // Do any additional setup after loading the view.
         
         setupInputFields()
-       // self.tabBarController?.tabBar.isHidden = true
 
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = true
+    }
     let logoView : UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.rgb(red: 17, green: 154, blue: 237)
@@ -48,6 +49,7 @@ class LoginVC: UIViewController {
     }()
     
     @objc func handleSignup(){
+        print("hi")
         let signupVC = SignupVC()
         self.navigationController?.pushViewController(signupVC, animated: true)
     }

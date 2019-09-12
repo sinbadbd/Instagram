@@ -10,10 +10,16 @@ import Foundation
 
 struct ChatMessages {
     let message : String
-    let isIncoming : Bool
+    let fromId : String
+    let toId : String
+    let currentTime : Int
+    let creationDate: Double
     
     init(dict: [String: Any]) {
         self.message = dict["message"] as? String ?? ""
-        self.isIncoming = dict["isIncoming"] as? Bool ?? false
+        self.fromId = dict["fromId"] as? String ?? ""
+        self.toId = dict["toId"] as? String ?? ""
+        self.currentTime = dict["currentTime"] as? Int ?? 0
+        self.creationDate = dict["creationDate"] as? Double ?? 0.0
     }
 }

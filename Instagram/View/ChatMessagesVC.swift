@@ -214,11 +214,14 @@ class ChatMessagesVC: UITableViewController {
         print("hi")
         
         guard let uid = Auth.auth().currentUser?.uid else {return}
+        guard let toId = user?.uid else { return }
+        let currentTime:NSNumber = Int(NSDate().timeIntervalSince1970) as NSNumber 
         let value = [
             "message" : commentInputField.text ?? "",
             "creationDate" : Date().timeIntervalSince1970,
-            "uid" : uid,
-            "isIncoming": false
+            "toId" : toId,
+            "fromId": uid,
+            "currentTime" : currentTime
             ] as [String : Any]
         
         

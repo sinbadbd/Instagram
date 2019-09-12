@@ -54,7 +54,9 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
             print("Failed to fetch ordered posts:", err)
         }
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
+    }
     func setuplogoutButton(){
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleLogout))
     }
